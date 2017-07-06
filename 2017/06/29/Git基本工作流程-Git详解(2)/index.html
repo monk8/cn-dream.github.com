@@ -1,0 +1,795 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Git详解," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Git 4种对象 blob （文本文件，二进制文件，链接文件） tree （目录） commit (历史提交) tag （指向一个固定的历史提交）     graph LR b1[id:c376dblob] b2[id:6a3cbblob] b3[id:4a62cblob] tree[id:825c7tree:sizeblob:c376dblob:6a3cbblob:4a62c] commit[i">
+<meta name="keywords" content="Git详解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git基本工作流程-Git详解(2)">
+<meta property="og:url" content="http://cn-dream.github.io/2017/06/29/Git基本工作流程-Git详解(2)/index.html">
+<meta property="og:site_name" content="中国梦">
+<meta property="og:description" content="Git 4种对象 blob （文本文件，二进制文件，链接文件） tree （目录） commit (历史提交) tag （指向一个固定的历史提交）     graph LR b1[id:c376dblob] b2[id:6a3cbblob] b3[id:4a62cblob] tree[id:825c7tree:sizeblob:c376dblob:6a3cbblob:4a62c] commit[i">
+<meta property="og:updated_time" content="2017-07-06T13:44:01.593Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git基本工作流程-Git详解(2)">
+<meta name="twitter:description" content="Git 4种对象 blob （文本文件，二进制文件，链接文件） tree （目录） commit (历史提交) tag （指向一个固定的历史提交）     graph LR b1[id:c376dblob] b2[id:6a3cbblob] b3[id:4a62cblob] tree[id:825c7tree:sizeblob:c376dblob:6a3cbblob:4a62c] commit[i">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cn-dream.github.io/2017/06/29/Git基本工作流程-Git详解(2)/"/>
+
+
+
+
+
+  <title>Git基本工作流程-Git详解(2) | 中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">慢慢来，理解越多，越不需要强记。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.github.io/2017/06/29/Git基本工作流程-Git详解(2)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git基本工作流程-Git详解(2)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-29T23:55:21+08:00">
+                2017-06-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Git-4种对象"><a href="#Git-4种对象" class="headerlink" title="Git 4种对象"></a>Git 4种对象</h3><ul>
+<li>blob （文本文件，二进制文件，链接文件）</li>
+<li>tree （目录）</li>
+<li>commit (历史提交)</li>
+<li>tag （指向一个固定的历史提交）</li>
+</ul>
+<div class="mermaid">
+  graph LR
+b1[id:c376d<br>blob]
+b2[id:6a3cb<br>blob]
+b3[id:4a62c<br>blob]
+tree[id:825c7<br>tree:size<br>blob:c376d<br>blob:6a3cb<br>blob:4a62c]
+commit[id:7562d<br>commit:size<br>tree:825c7<br>author:jkxy<br>first commit]
+tag[id:12ch6<br>tag:size<br>object:7562d<br>type:commit<br>tag:V0.0.1<br>tagger:jkxy<br>tag for first commit ]
+tag --> commit
+commit --> tree
+tree --> b1 
+tree --> b2
+tree --> b3
+</div>
+
+<h3 id="Git-仓库的获取"><a href="#Git-仓库的获取" class="headerlink" title="Git 仓库的获取"></a>Git 仓库的获取</h3><ul>
+<li>git init</li>
+<li>git clone</li>
+</ul>
+<p>Git 仓库分2种</p>
+<ul>
+<li>bare： (裸仓库) 不带工作区.git目录，常用在服务器上方便协作</li>
+<li>non-bare：带 .git 目录</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git init  <span class="comment">#初始化当前目录为仓库</span></div><div class="line">$ git init non_bare_repo <span class="comment">#会新建目录并初始化</span></div></pre></td></tr></table></figure>
+<p>创建一个裸仓库<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git init --bare git_bare_repo  <span class="comment">#无.git目录</span></div></pre></td></tr></table></figure></p>
+<p>对一个已有的文件目录，纳入git管理<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ mkdir git_init_repo <span class="comment"># 假设已经存在的目录</span></div><div class="line">$ <span class="built_in">cd</span> git_init_repo</div><div class="line">$ git init</div></pre></td></tr></table></figure></p>
+<p>使用git clone 获取仓库<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">clone</span> git_bare_repo git _clone_repo</div></pre></td></tr></table></figure></p>
+<h3 id="Git-工作区、暂存区、历史区"><a href="#Git-工作区、暂存区、历史区" class="headerlink" title="Git 工作区、暂存区、历史区"></a>Git 工作区、暂存区、历史区</h3><div class="mermaid">
+  graph TD
+wd[working directory<br>工作区]
+sa[staging direct<br>暂存区]
+hr[history repository<br>历史区]
+wd --> |stage files| sa
+sa --> |commit| hr
+hr --> |check out the project| wd
+</div>
+
+<p>相关命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git add</div><div class="line">$ git commit</div><div class="line">$ git status</div><div class="line">$ git rm</div><div class="line">$ git mv</div><div class="line">6 git gitignore</div></pre></td></tr></table></figure></p>
+<p>例子<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ git init git_basics</div><div class="line">$ <span class="built_in">cd</span> git_basics</div><div class="line">$ touch a</div><div class="line">$ touch b</div><div class="line">$ git add a b</div><div class="line">$ git commit -m <span class="string">"Initial commit"</span></div><div class="line">$ vim a  <span class="comment">#修改a ,加入文字</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes not staged <span class="keyword">for</span> commit:</div><div class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</div><div class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</div><div class="line"></div><div class="line">        modified:   a</div><div class="line"></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure>
+<p>git commit -a 参数 ，这里等价于 $ git add a<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git commit -a -m <span class="string">'modify a'</span></div><div class="line">On branch master</div><div class="line">Changes not staged <span class="keyword">for</span> commit:</div><div class="line">        modified:   a</div><div class="line">no changes added to commit</div></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git rm a  <span class="comment"># 会删除工作区和暂存区的文件,但并commit</span></div></pre></td></tr></table></figure>
+<p>因为没有提交，可以用命令恢复<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git reset HEAD a</div><div class="line">$ git checkout a</div></pre></td></tr></table></figure></p>
+<p>只删除暂存区的文件，不删工作区<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git rm --cached a</div></pre></td></tr></table></figure></p>
+<p>重命名<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git mv  c d</div><div class="line">On branch master</div><div class="line">Changes to be committed:</div><div class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</div><div class="line"></div><div class="line">        renamed:    c -&gt; d</div></pre></td></tr></table></figure></p>
+<h3 id="git-ingnore"><a href="#git-ingnore" class="headerlink" title="git ingnore"></a>git ingnore</h3><p>.gitignore 配置文件用于配置不需要加入版本管理的文件</p>
+<h4 id="配置语法："><a href="#配置语法：" class="headerlink" title="配置语法："></a>配置语法：</h4><ul>
+<li>以斜杠“/”开头表示目录；</li>
+<li>以星号“*”通配多个字符；</li>
+<li>以问号“?”通配单个字符</li>
+<li>以方括号“[]”包含单个字符的匹配列表；</li>
+<li>以叹号“!”表示不忽略(跟踪)匹配到的文件或目录；</li>
+</ul>
+<p>此外，git 对于 .ignore 配置文件是按行从上到下进行规则匹配的，意味着如果前面的规则匹配的范围更大，则后面的规则将不会生效；</p>
+<h4 id="示例说明"><a href="#示例说明" class="headerlink" title="示例说明"></a>示例说明</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">[wangshibo@gerrit-server hqsb_android]$ cat .gitignore</div><div class="line"><span class="comment">#Built application files</span></div><div class="line">*.apk</div><div class="line">*.ap_</div><div class="line"> </div><div class="line">*.[oa] <span class="comment">#根目录下以o或a结尾排除</span></div><div class="line">*.pyc</div><div class="line">!foo.pyc <span class="comment">#foo.pyc不忽略</span></div><div class="line">**/res <span class="comment">#任意目录下的res</span></div><div class="line"></div><div class="line"><span class="comment"># Files for the Dalvik VM</span></div><div class="line">*.dex</div><div class="line"> </div><div class="line"><span class="comment"># Java class files</span></div><div class="line">*.class</div></pre></td></tr></table></figure>
+<h2 id="Git-暂存区"><a href="#Git-暂存区" class="headerlink" title="Git 暂存区"></a>Git 暂存区</h2><p>维护一个虚拟的数据结构，代表了将要被提交的下一次数据的整体</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git详解/" rel="tag"># Git详解</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/29/SublimeText3设置TAB键为缩进为四个空格/" rel="next" title="SublimeText3设置TAB键为缩进为四个空格">
+                <i class="fa fa-chevron-left"></i> SublimeText3设置TAB键为缩进为四个空格
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/02/ubuntu 下升级 npm 和 git/" rel="prev" title="ubuntu 下 npm 和 git 的升级方法">
+                ubuntu 下 npm 和 git 的升级方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-4种对象"><span class="nav-number">1.</span> <span class="nav-text">Git 4种对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-仓库的获取"><span class="nav-number">2.</span> <span class="nav-text">Git 仓库的获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-工作区、暂存区、历史区"><span class="nav-number">3.</span> <span class="nav-text">Git 工作区、暂存区、历史区</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-ingnore"><span class="nav-number">4.</span> <span class="nav-text">git ingnore</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置语法："><span class="nav-number">4.1.</span> <span class="nav-text">配置语法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#示例说明"><span class="nav-number">4.2.</span> <span class="nav-text">示例说明</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Git-暂存区"><span class="nav-number"></span> <span class="nav-text">Git 暂存区</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

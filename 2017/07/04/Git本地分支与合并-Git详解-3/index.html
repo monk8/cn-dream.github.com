@@ -1,0 +1,877 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Git详解," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="本节概要  git branch (创建分支) git tag （给固定的commit做标记） git checkout （在分支之间切换） git stash （这样在切换分支之前保存本地修改） git merge （合并分支）  当我们在一些其他的工作不想直接在master分支上做的时候，比如：增加一些新特性，或者问题的修复，测试等，这是偶，可以创建分支branch。 12345678910$">
+<meta name="keywords" content="Git详解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git本地分支与合并-Git详解(3)">
+<meta property="og:url" content="http://cn-dream.github.io/2017/07/04/Git本地分支与合并-Git详解-3/index.html">
+<meta property="og:site_name" content="中国梦">
+<meta property="og:description" content="本节概要  git branch (创建分支) git tag （给固定的commit做标记） git checkout （在分支之间切换） git stash （这样在切换分支之前保存本地修改） git merge （合并分支）  当我们在一些其他的工作不想直接在master分支上做的时候，比如：增加一些新特性，或者问题的修复，测试等，这是偶，可以创建分支branch。 12345678910$">
+<meta property="og:updated_time" content="2017-07-06T13:44:01.600Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Git本地分支与合并-Git详解(3)">
+<meta name="twitter:description" content="本节概要  git branch (创建分支) git tag （给固定的commit做标记） git checkout （在分支之间切换） git stash （这样在切换分支之前保存本地修改） git merge （合并分支）  当我们在一些其他的工作不想直接在master分支上做的时候，比如：增加一些新特性，或者问题的修复，测试等，这是偶，可以创建分支branch。 12345678910$">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cn-dream.github.io/2017/07/04/Git本地分支与合并-Git详解-3/"/>
+
+
+
+
+
+  <title>Git本地分支与合并-Git详解(3) | 中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">慢慢来，理解越多，越不需要强记。</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.github.io/2017/07/04/Git本地分支与合并-Git详解-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Git本地分支与合并-Git详解(3)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-04T22:03:35+08:00">
+                2017-07-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本节概要</p>
+<ul>
+<li>git branch (创建分支)</li>
+<li>git tag （给固定的commit做标记）</li>
+<li>git checkout （在分支之间切换）</li>
+<li>git stash （这样在切换分支之前保存本地修改）</li>
+<li>git merge （合并分支）</li>
+</ul>
+<p>当我们在一些其他的工作不想直接在master分支上做的时候，比如：增加一些新特性，或者问题的修复，测试等，这是偶，可以创建分支branch。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ git init git_checkout_merge</div><div class="line">$ <span class="built_in">cd</span> git_checkout_merge</div><div class="line">$ touch master.txt <span class="comment">#并添加一些内容</span></div><div class="line">$ git add master.txt</div><div class="line">$ git commit -m <span class="string">'Initial commit on master'</span></div><div class="line">$ git branch test_branch</div><div class="line">$ git checkout test_branch</div><div class="line">$ vim master.txt <span class="comment"># 再修改一下</span></div><div class="line">$ git commit -a -m <span class="string">'Initial on test_branch'</span></div><div class="line">$ git checkout master</div></pre></td></tr></table></figure>
+<p>注，2个分支的 master.txt 内容不一样</p>
+<h3 id="git-tag"><a href="#git-tag" class="headerlink" title="git tag"></a>git tag</h3><p>branch 总是指向最新的commit，当需要指向固定的commit时，可以使用 git tag。比如，用于release 时候，打个tag，便于，出现问题，回滚道上一次tag状态。</p>
+<p>命令格式: git tag tagname hash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">log</span> --oneline --decorate --graph --all</div><div class="line">* f2a8fa3 (test_branch) Initial commit on test_branch</div><div class="line">* 3354ddc (HEAD, master) Initial master.txt on master</div><div class="line">$ git tag <span class="string">'v0'</span> 3354ddc</div><div class="line">$ git tag -a <span class="string">'INITIAL_COMMIT'</span> 3354ddc <span class="comment"># 功能同上，可交互输入注释</span></div><div class="line">$ git tag <span class="comment">#列出tag</span></div><div class="line">v0</div><div class="line">INITIAL_COMMIT</div><div class="line"></div><div class="line">$ git lol <span class="comment"># 可以看到 3354ddc 有2个tag</span></div><div class="line">* f2a8fa3 (test_branch) Initial commit on test_branch</div><div class="line">* 3354ddc (HEAD, tag: v0, tag: c, master) Initial master.txt on master</div></pre></td></tr></table></figure>
+<p>git show  用开查看对象信息<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 3个命令效果相同</span></div><div class="line">$ git show 3354ddc</div><div class="line">$ git show v0</div><div class="line">$ git show INITIAL_COMMIT</div></pre></td></tr></table></figure></p>
+<p>如果用git checkout 切换到某个tag 上，由于tag 无法记录修改历史，会建议你用当前的tag建立一个分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ git checkout v0</div><div class="line">Note: checking out <span class="string">'v0'</span>.</div><div class="line"></div><div class="line">You are <span class="keyword">in</span> <span class="string">'detached HEAD'</span> state. You can look around, make experimental</div><div class="line">changes and commit them, and you can discard any commits you make <span class="keyword">in</span> this</div><div class="line">state without impacting any branches by performing another checkout.</div><div class="line"></div><div class="line">If you want to create a new branch to retain commits you create, you may</div><div class="line"><span class="keyword">do</span> so (now or later) by using -b with the checkout <span class="built_in">command</span> again. Example:</div><div class="line"></div><div class="line">  git checkout -b new_branch_name</div><div class="line"></div><div class="line">HEAD is now at 3354ddc... Initial master.txt on master</div><div class="line"></div><div class="line">$ git checkout -b test_v0</div></pre></td></tr></table></figure>
+<h3 id="git-stash-用法"><a href="#git-stash-用法" class="headerlink" title="git stash 用法"></a>git stash 用法</h3><p>在一个分支中做了修改，并更新了暂存区，没有commit，这时，切换分支的化，会提示，将会丢失暂存区的内容，可以使用git stash 来保存此分支的工作区，和暂存区的状态，但并未提交</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git stash save -a <span class="string">"stash1"</span></div><div class="line">$ git stash list</div><div class="line">stash@&#123;0&#125;: On fix_v0: stash1</div><div class="line">stash@&#123;1&#125;: <span class="built_in">test</span> stash</div><div class="line">stash@&#123;2&#125;: WIP on master: 3354ddc Initial master.txt on master</div></pre></td></tr></table></figure>
+<p>git stash list 列出了所有stash对象，可以用 git stash pop 或者 apply 来还原工作区和暂存区<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git stash apply --index stash@&#123;0&#125; <span class="comment">#还原，不删除stash对象</span></div><div class="line">$ git stash pop --index stash@&#123;0&#125; <span class="comment">#还原同时删除对应的stash对象</span></div></pre></td></tr></table></figure></p>
+<p>删除 stash<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git stash list</div><div class="line">stash@&#123;0&#125;: <span class="built_in">test</span> stash</div><div class="line">stash@&#123;1&#125;: WIP on master: 3354ddc Initial master.txt on master</div><div class="line">$ git stash drop stash@&#123;1&#125;</div><div class="line">Dropped stash@&#123;1&#125; (65dd98455b4c193f6d8056566b710cdb760a01f5)</div></pre></td></tr></table></figure></p>
+<p>删除所有 stash<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git stash clear</div></pre></td></tr></table></figure></p>
+<h3 id="合并分支"><a href="#合并分支" class="headerlink" title="合并分支"></a>合并分支</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[rb git_checkout_merge (fix_v0)]$ git checkout master</div><div class="line">Switched to branch <span class="string">'master'</span></div><div class="line">[rb git_checkout_merge (master)]$ git merge fix_v0</div><div class="line">CONFLICT (modify/delete): master.txt deleted <span class="keyword">in</span> HEAD and modified <span class="keyword">in</span> fix_v0. Version fix_v0 of master.txt left <span class="keyword">in</span> tree.</div><div class="line">Automatic merge failed; fix conflicts and <span class="keyword">then</span> commit the result.</div></pre></td></tr></table></figure>
+<p>处理冲突，这里，我在master 上删除了 master.txt<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[rb git_checkout_merge (master *+|MERGING)]$ git status</div><div class="line">On branch master</div><div class="line">You have unmerged paths.</div><div class="line">  (fix conflicts and run <span class="string">"git commit"</span>)</div><div class="line"></div><div class="line">Unmerged paths:</div><div class="line">  (use <span class="string">"git add/rm &lt;file&gt;..."</span> as appropriate to mark resolution)</div><div class="line"></div><div class="line">        deleted by us:      master.txt</div><div class="line"></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div><div class="line">[rb git_checkout_merge (master *+|MERGING)]$ git add master.txt</div><div class="line">[rb git_checkout_merge (master +|MERGING)]$ git status</div><div class="line">On branch master</div><div class="line">All conflicts fixed but you are still merging.</div><div class="line">  (use <span class="string">"git commit"</span> to conclude merge)</div><div class="line">Changes to be committed:</div><div class="line">        new file:   master.txt</div><div class="line"></div><div class="line">[rb git_checkout_merge (master +|MERGING)]$ git commit -m <span class="string">"merge fix_v0 to master"</span></div><div class="line">[master 92297a8] merge fix_v0 to master</div><div class="line">[rb git_checkout_merge (master)]$ git status</div><div class="line">On branch master</div><div class="line">nothing to commit, working directory clean</div></pre></td></tr></table></figure></p>
+<p>放弃合并<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git merge --abort</div></pre></td></tr></table></figure></p>
+<p>总结：</p>
+<ul>
+<li>分支是一个commit的引用，在这些分支上工作，会产生各自的历史。</li>
+<li>切换分支，就是HEAD引用的移动，以及工作区和暂存区的还原。</li>
+</ul>
+<p>如下图，在commit(58ac6) 创建了分支 test，并进行了2次 commit，同时master 也 在commit(58ac6)向后继续开发</p>
+<div class="mermaid">
+  graph LR
+hd(HEAD)
+master(master)
+test(test)
+c1(3a789c)
+c2(678779)
+c3(5b8ac6)
+c4(2df781)
+c5(ac2dfc)
+m1(fa2dcc)
+m2(ac255c)
+m3(8f29a3)
+
+c1 --> c2
+c2 --> c3
+c3 --> c4
+c4 --> c5
+c3 --> m1
+m1 --> m2
+m2 --> m3
+master --> m3
+hd --> master
+test --> c5
+style c1 fill:#85f801
+style c2 fill:#85f801
+style c3 fill:#85f801
+style c4 fill:#85f801
+style c5 fill:#85f801
+style m1 fill:#85f801
+style m2 fill:#85f801
+style m3 fill:#85f801
+style master fill:#a63a30
+style test fill:#a63a30
+</div>
+
+<p>fast-forward-merage，快速合并，会丢弃一些历史commit，如下图<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git merge <span class="built_in">test</span></div></pre></td></tr></table></figure></p>
+<div class="mermaid">
+  graph LR
+hd(HEAD)
+master(master)
+test(test)
+c1(3a789c)
+c2(678779)
+c3(5b8ac6)
+c4(2df781)
+c5(ac2dfc)
+
+c1 --> c2
+c2 --> c3
+c3 --> c4
+c4 --> c5
+master --> c5
+hd --> master
+test --> c5
+style c1 fill:#85f801
+style c2 fill:#85f801
+style c3 fill:#85f801
+style c4 fill:#85f801
+style c5 fill:#85f801
+style master fill:#a63a30
+style test fill:#a63a30
+</div>
+
+<p>non-fast-forward-merge ，也称“三方合并”，会生成一个新的 commit 来记录修改历史</p>
+<p>一般，系统会自动判断是否使用  non-fast-forward-merge，也可以显示声明使用</p>
+<ul>
+<li>–no-ff 显示告诉Git不要fast forward</li>
+<li>cherry-pick</li>
+<li>–squash<div class="mermaid">
+  graph LR
+hd(HEAD)
+master(master)
+test(test)
+c1(3a789c)
+c2(678779)
+c3(5b8ac6)
+c4(2df781)
+c5(ac2dfc)
+m1(fa2dcc)
+m2(ac255c)
+m3(8f29a3)
+
+ma(578c2a)
+
+c5 --> ma
+m3 --> ma
+
+c1 --> c2
+c2 --> c3
+c3 --> c4
+c4 --> c5
+c3 --> m1
+m1 --> m2
+m2 --> m3
+master --> ma
+hd --> master
+test --> c5
+
+style c1 fill:#85f801
+style c2 fill:#85f801
+style c3 fill:#85f801
+style c4 fill:#85f801
+style c5 fill:#85f801
+style m1 fill:#85f801
+style m2 fill:#85f801
+style m3 fill:#85f801
+style ma fill:#85f801
+style master fill:#a63a30
+style test fill:#a63a30
+</div>
+
+</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git详解/" rel="tag"># Git详解</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/04/Hexo-Blog-搭建/" rel="next" title="Hexo Blog 搭建">
+                <i class="fa fa-chevron-left"></i> Hexo Blog 搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/04/查看与对比历史记录-Git详解-4/" rel="prev" title="查看与对比历史记录-Git详解(4)">
+                查看与对比历史记录-Git详解(4) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#git-tag"><span class="nav-number">1.</span> <span class="nav-text">git tag</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-stash-用法"><span class="nav-number">2.</span> <span class="nav-text">git stash 用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并分支"><span class="nav-number">3.</span> <span class="nav-text">合并分支</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
