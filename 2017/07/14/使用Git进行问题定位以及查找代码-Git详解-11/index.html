@@ -1,0 +1,744 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Git详解," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="概要  使用git blame定位代码责任人 使用git bisect查找问题引入版本 使用grep查找指定内容的位置 使用git log查找指定内容的历史记录  使用git blame定位代码责任人git blame 可以定位每行的修改人，如下定位到1623695606这个用户的责任123456789$ git blame blame.c^af6a144 (monk       2017-07-">
+<meta name="keywords" content="Git详解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Git进行问题定位以及查找代码-Git详解(11)">
+<meta property="og:url" content="http://cn-dream.coding.me/2017/07/14/使用Git进行问题定位以及查找代码-Git详解-11/index.html">
+<meta property="og:site_name" content="中国梦">
+<meta property="og:description" content="概要  使用git blame定位代码责任人 使用git bisect查找问题引入版本 使用grep查找指定内容的位置 使用git log查找指定内容的历史记录  使用git blame定位代码责任人git blame 可以定位每行的修改人，如下定位到1623695606这个用户的责任123456789$ git blame blame.c^af6a144 (monk       2017-07-">
+<meta property="og:updated_time" content="2017-07-14T09:48:30.719Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Git进行问题定位以及查找代码-Git详解(11)">
+<meta name="twitter:description" content="概要  使用git blame定位代码责任人 使用git bisect查找问题引入版本 使用grep查找指定内容的位置 使用git log查找指定内容的历史记录  使用git blame定位代码责任人git blame 可以定位每行的修改人，如下定位到1623695606这个用户的责任123456789$ git blame blame.c^af6a144 (monk       2017-07-">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cn-dream.coding.me/2017/07/14/使用Git进行问题定位以及查找代码-Git详解-11/"/>
+
+
+
+
+
+  <title>使用Git进行问题定位以及查找代码-Git详解(11) | 中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">慢慢来，理解越多，越不需要强记。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.coding.me/2017/07/14/使用Git进行问题定位以及查找代码-Git详解-11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">使用Git进行问题定位以及查找代码-Git详解(11)</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-14T17:47:25+08:00">
+                2017-07-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>概要</p>
+<ul>
+<li>使用git blame定位代码责任人</li>
+<li>使用git bisect查找问题引入版本</li>
+<li>使用grep查找指定内容的位置</li>
+<li>使用git log查找指定内容的历史记录</li>
+</ul>
+<h1 id="使用git-blame定位代码责任人"><a href="#使用git-blame定位代码责任人" class="headerlink" title="使用git blame定位代码责任人"></a>使用git blame定位代码责任人</h1><p>git blame 可以定位每行的修改人，如下定位到1623695606这个用户的责任<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git blame blame.c</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 1) int <span class="function"><span class="title">min</span></span>()&#123;</div><div class="line">120408ef (1623695606 2017-07-14 13:56:00 +0800 2)   <span class="built_in">return</span> 100;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 3) &#125;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 4)</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 5) int <span class="function"><span class="title">max</span></span>()&#123;</div><div class="line">120408ef (1623695606 2017-07-14 13:56:00 +0800 6)   <span class="built_in">return</span> 0;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 7) &#125;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 8)</div></pre></td></tr></table></figure></p>
+<p>限制定位的代码行数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git blame -L 1,3 blame.c</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 1) int <span class="function"><span class="title">min</span></span>()&#123;</div><div class="line">120408ef (1623695606 2017-07-14 13:56:00 +0800 2)   <span class="built_in">return</span> 100;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 3) &#125;</div></pre></td></tr></table></figure></p>
+<p>从第二行开始，2行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git blame -L 2,+2 blame.c</div><div class="line">120408ef (1623695606 2017-07-14 13:56:00 +0800 2)   <span class="built_in">return</span> 100;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 3) &#125;</div></pre></td></tr></table></figure></p>
+<h1 id="使用git-bisect查找问题引入版本"><a href="#使用git-bisect查找问题引入版本" class="headerlink" title="使用git bisect查找问题引入版本"></a>使用git bisect查找问题引入版本</h1><p>git blame 可以定位每行的修改人，如下定位到1623695606这个用户的责任<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git blame blame.c</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 1) int <span class="function"><span class="title">min</span></span>()&#123;</div><div class="line">120408ef (1623695606 2017-07-14 13:56:00 +0800 2)   <span class="built_in">return</span> 100;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 3) &#125;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 4)</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 5) int <span class="function"><span class="title">max</span></span>()&#123;</div><div class="line">120408ef (1623695606 2017-07-14 13:56:00 +0800 6)   <span class="built_in">return</span> 0;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 7) &#125;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 8)</div></pre></td></tr></table></figure></p>
+<p>限制定位的代码行数<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git blame -L 1,3 blame.c</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 1) int <span class="function"><span class="title">min</span></span>()&#123;</div><div class="line">120408ef (1623695606 2017-07-14 13:56:00 +0800 2)   <span class="built_in">return</span> 100;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 3) &#125;</div></pre></td></tr></table></figure></p>
+<p>从第二行开始，2行<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git blame -L 2,+2 blame.c</div><div class="line">120408ef (1623695606 2017-07-14 13:56:00 +0800 2)   <span class="built_in">return</span> 100;</div><div class="line">^af6a144 (monk       2017-07-14 13:54:45 +0800 3) &#125;</div></pre></td></tr></table></figure></p>
+<h1 id="使用grep查找指定内容的位置"><a href="#使用grep查找指定内容的位置" class="headerlink" title="使用grep查找指定内容的位置"></a>使用grep查找指定内容的位置</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git grep int</div><div class="line">blame.c:int <span class="function"><span class="title">min</span></span>()&#123;</div><div class="line">blame.c:int <span class="function"><span class="title">max</span></span>()&#123;</div></pre></td></tr></table></figure>
+<p>-n 显示行号<br>–count 字符串出现次数<br>-p 会显示包含字串的方法名<br>-e 使用正则表达式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git grep -n -p <span class="built_in">return</span> blame.c</div><div class="line">blame.c=1=int <span class="function"><span class="title">min</span></span>()&#123;</div><div class="line">blame.c:2:  <span class="built_in">return</span> 100;</div><div class="line">blame.c=5=int <span class="function"><span class="title">max</span></span>()&#123;</div><div class="line">blame.c:6:  <span class="built_in">return</span> 0;</div><div class="line">blame.c:8:<span class="built_in">return</span> 11;</div></pre></td></tr></table></figure>
+<p>使用正则表达式<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git grep -e <span class="string">'r[0]'</span></div><div class="line">blame.c:  int r0 =100;</div></pre></td></tr></table></figure></p>
+<p>组合<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git grep -e <span class="string">'lisi'</span> --or -e <span class="string">'wangwu'</span> <span class="comment">#or可省略</span></div><div class="line">git_grep.txt:zhangsan lisi</div><div class="line">git_grep.txt:wangwu</div><div class="line">git_grep.txt:zhangsan wangwu</div></pre></td></tr></table></figure></p>
+<p>复杂组合<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git grep -e <span class="string">'zhangsan'</span> --and \( -e <span class="string">'wangwu'</span> --or --not -e <span class="string">'lisi'</span> \)</div><div class="line">blame.c:zhangsan</div><div class="line">blame.c:zhangsan lisi wangwu</div></pre></td></tr></table></figure></p>
+<h1 id="使用git-log查找指定内容的历史记录"><a href="#使用git-log查找指定内容的历史记录" class="headerlink" title="使用git log查找指定内容的历史记录"></a>使用git log查找指定内容的历史记录</h1><h2 id="查看在哪个版本首次出现"><a href="#查看在哪个版本首次出现" class="headerlink" title="查看在哪个版本首次出现"></a>查看在哪个版本首次出现</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">log</span> -SLOG_BUF_MAX --oneline</div><div class="line">432b865 first commit</div></pre></td></tr></table></figure>
+<h2 id="查找函数的变更历史"><a href="#查找函数的变更历史" class="headerlink" title="查找函数的变更历史"></a>查找函数的变更历史</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">log</span> -L :git_default_bound:git_log.c</div></pre></td></tr></table></figure>
+<h2 id="当有些方法，git识别不出"><a href="#当有些方法，git识别不出" class="headerlink" title="当有些方法，git识别不出"></a>当有些方法，git识别不出</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">log</span> -L <span class="string">'/unsigned long git_deflate_bound/'</span>,/^&#125;/:git_log.c</div></pre></td></tr></table></figure>
+<h2 id="查看指定行的历史记录"><a href="#查看指定行的历史记录" class="headerlink" title="查看指定行的历史记录"></a>查看指定行的历史记录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">log</span> -L 2,5:git_log.c</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git详解/" rel="tag"># Git详解</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/14/搭建Git服务器-Git详解-10/" rel="next" title="搭建Git服务器-Git详解(10)">
+                <i class="fa fa-chevron-left"></i> 搭建Git服务器-Git详解(10)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用git-blame定位代码责任人"><span class="nav-number">1.</span> <span class="nav-text">使用git blame定位代码责任人</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用git-bisect查找问题引入版本"><span class="nav-number">2.</span> <span class="nav-text">使用git bisect查找问题引入版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用grep查找指定内容的位置"><span class="nav-number">3.</span> <span class="nav-text">使用grep查找指定内容的位置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用git-log查找指定内容的历史记录"><span class="nav-number">4.</span> <span class="nav-text">使用git log查找指定内容的历史记录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看在哪个版本首次出现"><span class="nav-number">4.1.</span> <span class="nav-text">查看在哪个版本首次出现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找函数的变更历史"><span class="nav-number">4.2.</span> <span class="nav-text">查找函数的变更历史</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当有些方法，git识别不出"><span class="nav-number">4.3.</span> <span class="nav-text">当有些方法，git识别不出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看指定行的历史记录"><span class="nav-number">4.4.</span> <span class="nav-text">查看指定行的历史记录</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
