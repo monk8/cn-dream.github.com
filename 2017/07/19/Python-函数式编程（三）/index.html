@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Python," />
 
 
 
@@ -93,16 +93,17 @@
 
 
 
-<meta name="description" content="当我们编写Python代码时，我们得到的是一个包含Python代码的以.py为扩展名的文本文件。要运行代码，就需要Python解释器去执行.py文件。 由于整个Python语言从规范到解释器都是开源的，所以理论上，只要水平够高，任何人都可以编写Python解释器来执行Python代码（当然难度很大）。事实上，确实存在多种Python解释器。 CPython 当我们从Python官方网站下载并安装好">
+<meta name="description" content="函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！Python对函数式编程提供部分支持。由于Python允许使用变量，因此，Python不是纯函数式编程语言。 高阶函数高阶函数英文叫Higher-order function。 变量可以指向函数123&amp;gt;&amp;gt;&amp;gt; f = abs&amp;gt;&amp;gt;&amp;gt; f(-10)10 函数名也是变量 123&amp;gt;&amp;">
+<meta name="keywords" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python解释器(1)">
-<meta property="og:url" content="http://cn-dream.coding.me/2017/07/17/Python解释器-1/index.html">
+<meta property="og:title" content="Python 函数式编程（三）">
+<meta property="og:url" content="http://cn-dream.coding.me/2017/07/19/Python-函数式编程（三）/index.html">
 <meta property="og:site_name" content="中国梦">
-<meta property="og:description" content="当我们编写Python代码时，我们得到的是一个包含Python代码的以.py为扩展名的文本文件。要运行代码，就需要Python解释器去执行.py文件。 由于整个Python语言从规范到解释器都是开源的，所以理论上，只要水平够高，任何人都可以编写Python解释器来执行Python代码（当然难度很大）。事实上，确实存在多种Python解释器。 CPython 当我们从Python官方网站下载并安装好">
-<meta property="og:updated_time" content="2017-07-17T05:57:14.604Z">
+<meta property="og:description" content="函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！Python对函数式编程提供部分支持。由于Python允许使用变量，因此，Python不是纯函数式编程语言。 高阶函数高阶函数英文叫Higher-order function。 变量可以指向函数123&amp;gt;&amp;gt;&amp;gt; f = abs&amp;gt;&amp;gt;&amp;gt; f(-10)10 函数名也是变量 123&amp;gt;&amp;">
+<meta property="og:updated_time" content="2017-07-19T12:16:14.344Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python解释器(1)">
-<meta name="twitter:description" content="当我们编写Python代码时，我们得到的是一个包含Python代码的以.py为扩展名的文本文件。要运行代码，就需要Python解释器去执行.py文件。 由于整个Python语言从规范到解释器都是开源的，所以理论上，只要水平够高，任何人都可以编写Python解释器来执行Python代码（当然难度很大）。事实上，确实存在多种Python解释器。 CPython 当我们从Python官方网站下载并安装好">
+<meta name="twitter:title" content="Python 函数式编程（三）">
+<meta name="twitter:description" content="函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！Python对函数式编程提供部分支持。由于Python允许使用变量，因此，Python不是纯函数式编程语言。 高阶函数高阶函数英文叫Higher-order function。 变量可以指向函数123&amp;gt;&amp;gt;&amp;gt; f = abs&amp;gt;&amp;gt;&amp;gt; f(-10)10 函数名也是变量 123&amp;gt;&amp;">
 
 
 
@@ -130,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://cn-dream.coding.me/2017/07/17/Python解释器-1/"/>
+  <link rel="canonical" href="http://cn-dream.coding.me/2017/07/19/Python-函数式编程（三）/"/>
 
 
 
 
 
-  <title>Python解释器(1) | 中国梦</title>
+  <title>Python 函数式编程（三） | 中国梦</title>
   
 
 
@@ -265,7 +266,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://cn-dream.coding.me/2017/07/17/Python解释器-1/">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.coding.me/2017/07/19/Python-函数式编程（三）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="1623695606@qq.com">
@@ -282,7 +283,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Python解释器(1)</h2>
+          <h2 class="post-title" itemprop="name headline">Python 函数式编程（三）</h2>
         
 
         <div class="post-meta">
@@ -294,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-17T13:52:28+08:00">
-                2017-07-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-19T20:13:47+08:00">
+                2017-07-19
               </time>
             
 
@@ -362,24 +363,15 @@
       
 
       
-        <p>当我们编写Python代码时，我们得到的是一个包含Python代码的以.py为扩展名的文本文件。要运行代码，就需要Python解释器去执行.py文件。</p>
-<p>由于整个Python语言从规范到解释器都是开源的，所以理论上，只要水平够高，任何人都可以编写Python解释器来执行Python代码（当然难度很大）。事实上，确实存在多种Python解释器。</p>
-<p>CPython</p>
-<p>当我们从Python官方网站下载并安装好Python 3.5后，我们就直接获得了一个官方版本的解释器：CPython。这个解释器是用C语言开发的，所以叫CPython。在命令行下运行python就是启动CPython解释器。</p>
-<p>CPython是使用最广的Python解释器。教程的所有代码也都在CPython下执行。</p>
-<p>IPython</p>
-<p>IPython是基于CPython之上的一个交互式解释器，也就是说，IPython只是在交互方式上有所增强，但是执行Python代码的功能和CPython是完全一样的。好比很多国产浏览器虽然外观不同，但内核其实都是调用了IE。</p>
-<p>CPython用&gt;&gt;&gt;作为提示符，而IPython用In [序号]:作为提示符。</p>
-<p>PyPy</p>
-<p>PyPy是另一个Python解释器，它的目标是执行速度。PyPy采用JIT技术，对Python代码进行动态编译（注意不是解释），所以可以显著提高Python代码的执行速度。</p>
-<p>绝大部分Python代码都可以在PyPy下运行，但是PyPy和CPython有一些是不同的，这就导致相同的Python代码在两种解释器下执行可能会有不同的结果。如果你的代码要放到PyPy下执行，就需要了解PyPy和CPython的不同点。</p>
-<p>Jython</p>
-<p>Jython是运行在Java平台上的Python解释器，可以直接把Python代码编译成Java字节码执行。</p>
-<p>IronPython</p>
-<p>IronPython和Jython类似，只不过IronPython是运行在微软.Net平台上的Python解释器，可以直接把Python代码编译成.Net的字节码。</p>
-<p>小结</p>
-<p>Python的解释器很多，但使用最广泛的还是CPython。如果要和Java或.Net平台交互，最好的办法不是用Jython或IronPython，而是通过网络调用来交互，确保各程序之间的独立性。</p>
-<p>参考：<br><a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/00143161198846783e33de56d4041058c3dfc7e44ee1203000" target="_blank" rel="external">https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/00143161198846783e33de56d4041058c3dfc7e44ee1203000</a></p>
+        <p>函数式编程的一个特点就是，允许把函数本身作为参数传入另一个函数，还允许返回一个函数！<br>Python对函数式编程提供部分支持。由于Python允许使用变量，因此，Python不是纯函数式编程语言。</p>
+<h2 id="高阶函数"><a href="#高阶函数" class="headerlink" title="高阶函数"></a>高阶函数</h2><p>高阶函数英文叫Higher-order function。</p>
+<p>变量可以指向函数<br><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>f = abs</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>f(<span class="number">-10</span>)</div><div class="line"><span class="number">10</span></div></pre></td></tr></table></figure></p>
+<p>函数名也是变量</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs = <span class="number">10</span></div><div class="line">abs</div><div class="line"><span class="number">10</span></div></pre></td></tr></table></figure>
+<p>传入函数<br>一个函数就可以接收另一个函数作为参数，这种函数就称之为高阶函数。<br><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x, y, f)</span>:</span></div><div class="line">    <span class="keyword">return</span> f(x) + f(y)</div></pre></td></tr></table></figure></p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a,b ,fun)</span>:</span></div><div class="line">    <span class="keyword">return</span> fun(a) + fun(b)</div><div class="line">l = add(<span class="number">-5</span>,<span class="number">3</span>,abs)</div><div class="line">print(l)</div></pre></td></tr></table></figure>
+<h2 id="map-reduce"><a href="#map-reduce" class="headerlink" title="map/reduce"></a>map/reduce</h2><p>Python内建了map()和reduce()函数。<br><figure class="highlight py"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span></div><div class="line"><span class="meta">... </span>    <span class="keyword">return</span> x * x</div><div class="line">...</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>r = map(f, [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>list(r)</div><div class="line">[<span class="number">1</span>, <span class="number">4</span>, <span class="number">9</span>, <span class="number">16</span>, <span class="number">25</span>, <span class="number">36</span>, <span class="number">49</span>, <span class="number">64</span>, <span class="number">81</span>]</div></pre></td></tr></table></figure></p>
+<p>map()传入的第一个参数是f，即函数对象本身。由于结果r是一个Iterator，Iterator是惰性序列，因此通过list()函数让它把整个序列都计算出来并返回一个list。</p>
 
       
     </div>
@@ -407,6 +399,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
 
       
       
@@ -416,8 +414,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/14/亚马逊CEO-杰夫．贝佐斯：选择，比天赋更重要/" rel="next" title="亚马逊CEO 杰夫．贝佐斯：选择，比天赋更重要">
-                <i class="fa fa-chevron-left"></i> 亚马逊CEO 杰夫．贝佐斯：选择，比天赋更重要
+              <a href="/2017/07/19/Python-高级特性（二）/" rel="next" title="Python 高级特性（二）">
+                <i class="fa fa-chevron-left"></i> Python 高级特性（二）
               </a>
             
           </div>
@@ -425,10 +423,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/17/书签/" rel="prev" title="书签">
-                书签 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -475,8 +469,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -538,6 +541,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#高阶函数"><span class="nav-number">1.</span> <span class="nav-text">高阶函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#map-reduce"><span class="nav-number">2.</span> <span class="nav-text">map/reduce</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
