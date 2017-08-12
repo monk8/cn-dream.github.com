@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://cn-dream.coding.me/2017/08/09/旧版本Ubuntu下升级node-js过程/index.html">
 <meta property="og:site_name" content="中国梦">
 <meta property="og:description" content="安装n模块：1# npm install -g n 查看版本1# n -V 报错1n: command not found 使用本地安装n模块解决问题12345# cd ~/tools/nodejs/n# npm install n --save# export PATH=$PATH:~/tools/nodejs/n/node_modules/n/bin # n -V2.1.7 升级nodejs1">
-<meta property="og:updated_time" content="2017-08-09T06:19:38.755Z">
+<meta property="og:updated_time" content="2017-08-09T08:53:12.806Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="旧版本Ubuntu下升级node.js过程">
 <meta name="twitter:description" content="安装n模块：1# npm install -g n 查看版本1# n -V 报错1n: command not found 使用本地安装n模块解决问题12345# cd ~/tools/nodejs/n# npm install n --save# export PATH=$PATH:~/tools/nodejs/n/node_modules/n/bin # n -V2.1.7 升级nodejs1">
@@ -360,9 +360,10 @@
 <p>n后面也可以跟随版本号比如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">n v0.10.26</div></pre></td></tr></table></figure></p>
 <p>或者将配置添加到 ~/.bashrc 中 </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># source ~/.bashrc</span></div></pre></td></tr></table></figure>
+<h1 id="解决方法二"><a href="#解决方法二" class="headerlink" title="解决方法二"></a>解决方法二</h1><p>用一个通用的命令配置环境变量<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ <span class="built_in">echo</span> -e <span class="string">"export PATH=<span class="variable">$(npm prefix -g)</span>/bin:<span class="variable">$PATH</span>"</span> &gt;&gt; ~/.bashrc &amp;&amp; <span class="built_in">source</span> ~/.bashrc</div></pre></td></tr></table></figure></p>
 <p>参考知识</p>
 <blockquote>
-<p><a href="http://www.jb51.net/article/52409.htm" target="_blank" rel="external">一行命令搞定node.js 版本升级</a><br><a href="http://www.linuxidc.com/Linux/2015-01/111459.htm" target="_blank" rel="external">Linux 下三种方式设置环境变量</a></p>
+<p><a href="http://www.jb51.net/article/52409.htm" target="_blank" rel="external">一行命令搞定node.js 版本升级</a><br><a href="http://www.linuxidc.com/Linux/2015-01/111459.htm" target="_blank" rel="external">Linux 下三种方式设置环境变量</a><br><a href="http://blog.csdn.net/wirelessqa/article/details/53393248" target="_blank" rel="external">使用npm成功安装命令后,执行时却报找不到命令的问题</a></p>
 </blockquote>
 
       
@@ -420,6 +421,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/08/09/旧版本ubuntu使用ppa更新GIT/" rel="prev" title="旧版本ubuntu使用ppa更新GIT">
+                旧版本ubuntu使用ppa更新GIT <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -465,8 +470,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -481,7 +495,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-count">35</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -503,7 +517,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-count">25</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -528,6 +542,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#解决方法二"><span class="nav-number">1.</span> <span class="nav-text">解决方法二</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
