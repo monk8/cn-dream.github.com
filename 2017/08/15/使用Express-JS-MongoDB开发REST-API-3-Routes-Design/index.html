@@ -93,13 +93,18 @@
 
 
 
+<meta name="description" content="nodemon在我们开发PHP，Java等web项目的时候，修改了项目代码，服务器都会自动重启，让我们的改动生效，但是node并不会这样，必须手动去重启一下，这样很烦人的啊，很浪费时间，于是就有大神开发了自动重启的工具——nodemon，很简单的。123$ npm install nodemon -g$ nodemon -v1.11.0 使用 npm start 脚本 ,  配置 package.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Express.JS+MongoDB开发REST-API(3.Routes Design)">
 <meta property="og:url" content="http://cn-dream.coding.me/2017/08/15/使用Express-JS-MongoDB开发REST-API-3-Routes-Design/index.html">
 <meta property="og:site_name" content="中国梦">
-<meta property="og:updated_time" content="2017-08-15T05:16:33.850Z">
+<meta property="og:description" content="nodemon在我们开发PHP，Java等web项目的时候，修改了项目代码，服务器都会自动重启，让我们的改动生效，但是node并不会这样，必须手动去重启一下，这样很烦人的啊，很浪费时间，于是就有大神开发了自动重启的工具——nodemon，很简单的。123$ npm install nodemon -g$ nodemon -v1.11.0 使用 npm start 脚本 ,  配置 package.">
+<meta property="og:image" content="http://cn-dream.coding.me/2017/08/15/使用Express-JS-MongoDB开发REST-API-3-Routes-Design/1.png">
+<meta property="og:updated_time" content="2017-08-15T07:49:24.465Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Express.JS+MongoDB开发REST-API(3.Routes Design)">
+<meta name="twitter:description" content="nodemon在我们开发PHP，Java等web项目的时候，修改了项目代码，服务器都会自动重启，让我们的改动生效，但是node并不会这样，必须手动去重启一下，这样很烦人的啊，很浪费时间，于是就有大神开发了自动重启的工具——nodemon，很简单的。123$ npm install nodemon -g$ nodemon -v1.11.0 使用 npm start 脚本 ,  配置 package.">
+<meta name="twitter:image" content="http://cn-dream.coding.me/2017/08/15/使用Express-JS-MongoDB开发REST-API-3-Routes-Design/1.png">
 
 
 
@@ -326,7 +331,16 @@
       
 
       
-        
+        <h1 id="nodemon"><a href="#nodemon" class="headerlink" title="nodemon"></a>nodemon</h1><p>在我们开发PHP，Java等web项目的时候，修改了项目代码，服务器都会自动重启，让我们的改动生效，但是node并不会这样，必须手动去重启一下，这样很烦人的啊，很浪费时间，于是就有大神开发了自动重启的工具——nodemon，很简单的。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ npm install nodemon -g</div><div class="line">$ nodemon -v</div><div class="line">1.11.0</div></pre></td></tr></table></figure></p>
+<p>使用 npm start 脚本 ,  配置 package.json 文件<br><img src="/2017/08/15/使用Express-JS-MongoDB开发REST-API-3-Routes-Design/1.png" alt="1"><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ npm start</div></pre></td></tr></table></figure></p>
+<h1 id="controllers-and-routers"><a href="#controllers-and-routers" class="headerlink" title="controllers and routers"></a>controllers and routers</h1><p>app.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">const</span> logger = <span class="built_in">require</span>(<span class="string">'morgan'</span>)</div><div class="line"><span class="keyword">const</span> app = express();</div><div class="line"></div><div class="line"><span class="comment">//Routes</span></div><div class="line"><span class="keyword">const</span> users = <span class="built_in">require</span>(<span class="string">'./routers/users'</span>);</div><div class="line"><span class="keyword">const</span> index = <span class="built_in">require</span>(<span class="string">'./routers/index'</span>);</div><div class="line"></div><div class="line"><span class="comment">// Middlewares</span></div><div class="line">app.use(logger(<span class="string">'dev'</span>));</div><div class="line"></div><div class="line"><span class="comment">//Routes</span></div><div class="line">app.use(<span class="string">'/users'</span>,users);</div><div class="line">app.get(<span class="string">'/'</span>,index);</div><div class="line"><span class="comment">//Catch 404 Errors and forword them to error handler</span></div><div class="line">app.use(<span class="function">(<span class="params">req,res,next</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">const</span> err = <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">'Not Found'</span>);</div><div class="line">    err.status = <span class="number">404</span>;</div><div class="line">    next(err);</div><div class="line">&#125;);</div><div class="line"><span class="comment">//Error handler function</span></div><div class="line">app.use(<span class="function">(<span class="params">err,req,res,next</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">//Response to client</span></div><div class="line">    <span class="keyword">const</span> error = app.get(<span class="string">'env'</span>) === <span class="string">'development'</span> ? err : &#123;&#125;;</div><div class="line">    <span class="keyword">const</span> status = err.status || <span class="number">500</span>;</div><div class="line">    <span class="comment">//Reponse to ourselves</span></div><div class="line">    res.status(status).json(&#123;</div><div class="line">        <span class="attr">error</span>:&#123;</div><div class="line">            <span class="attr">message</span>: error.message</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">&#125;);</div><div class="line"><span class="comment">//Start the server</span></div><div class="line"><span class="keyword">const</span> port = app.get(<span class="string">'port'</span>) || <span class="number">3000</span>;</div><div class="line">app.listen(port,()=&gt; <span class="built_in">console</span>.log(<span class="string">`Server is listening on port <span class="subst">$&#123;port&#125;</span>`</span>));</div></pre></td></tr></table></figure></p>
+<p>routers/users.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">const</span> router = express.Router();</div><div class="line"><span class="keyword">const</span> userController = <span class="built_in">require</span>(<span class="string">'../controllers/users'</span>);</div><div class="line">router.route(<span class="string">'/'</span>)</div><div class="line">    .get(userController.index)</div><div class="line">    .post();</div><div class="line"><span class="built_in">module</span>.exports = router;</div><div class="line"><span class="comment">/*</span></div><div class="line">另一种写法    </div><div class="line">router.get('/',(req,res,next)=&gt;&#123;</div><div class="line">&#125;);</div><div class="line">router.post('/',(req,res,next)=&gt;&#123;</div><div class="line">&#125;);</div><div class="line">*/</div></pre></td></tr></table></figure></p>
+<p>controllers/user.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">    <span class="attr">index</span>:<span class="function">(<span class="params">req,res,next</span>) =&gt;</span> &#123;</div><div class="line">        res.status(<span class="number">200</span>).json(&#123;</div><div class="line">            <span class="attr">message</span>:<span class="string">'You are request users page.'</span></div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h1><p><a href="https://github.com/monk8/expressjs-rest-api-server.git" target="_blank" rel="external">https://github.com/monk8/expressjs-rest-api-server.git</a></p>
+<blockquote>
+<p>知识来源<br><a href="http://blog.csdn.net/godha/article/details/17300293" target="_blank" rel="external">使用nodemon让node自动重启</a></p>
+</blockquote>
+
       
     </div>
 
@@ -417,8 +431,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -480,6 +503,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#nodemon"><span class="nav-number">1.</span> <span class="nav-text">nodemon</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#controllers-and-routers"><span class="nav-number">2.</span> <span class="nav-text">controllers and routers</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整代码"><span class="nav-number">3.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
