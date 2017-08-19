@@ -102,9 +102,8 @@
 <meta property="og:description" content="安装MongoDBhttps://www.mongodb.com/Robomongo (可视化工具)[https://robomongo.org/]https://robomongo.org/ 为了方便，把mogodb 的 bin目录添加到path mongod.exe 启动mongodb服务1&amp;gt; mongod --port 27019 连接服务器12345678910&amp;gt; mongo">
 <meta property="og:image" content="http://cn-dream.coding.me/2017/08/15/REST-API-04-MongoDB/2.png">
 <meta property="og:image" content="http://cn-dream.coding.me/2017/08/15/REST-API-04-MongoDB/1.png">
-<meta property="og:image" content="http://cn-dream.coding.me/2017/08/15/REST-API-04-MongoDB/3.png">
 <meta property="og:image" content="http://cn-dream.coding.me/2017/08/15/REST-API-04-MongoDB/4.png">
-<meta property="og:updated_time" content="2017-08-16T09:36:21.320Z">
+<meta property="og:updated_time" content="2017-08-17T05:40:28.097Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="REST-API-04-MongoDB">
 <meta name="twitter:description" content="安装MongoDBhttps://www.mongodb.com/Robomongo (可视化工具)[https://robomongo.org/]https://robomongo.org/ 为了方便，把mogodb 的 bin目录添加到path mongod.exe 启动mongodb服务1&amp;gt; mongod --port 27019 连接服务器12345678910&amp;gt; mongo">
@@ -385,7 +384,6 @@
 <h1 id="安装为windows系统服务"><a href="#安装为windows系统服务" class="headerlink" title="安装为windows系统服务"></a>安装为windows系统服务</h1><p>方法一<br>用管理员身份运行如下命令，并建好相应的目录<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; mongod --logpath d:\dev\env\mongo\<span class="built_in">log</span> --logappend --dbpath d:\dev\env\mongo\db --directoryperdb --serviceName MongoDB --install</div></pre></td></tr></table></figure></p>
 <p><img src="/2017/08/15/REST-API-04-MongoDB/1.png" alt="1.png"></p>
 <p>方法二<br>根据配置文件创建服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; mongod --config &lt;mongo.config&gt; --install</div></pre></td></tr></table></figure></p>
-<h1 id="新建数据库"><a href="#新建数据库" class="headerlink" title="新建数据库"></a>新建数据库</h1><p>使用可视化工具 Robomongo<br><img src="/2017/08/15/REST-API-04-MongoDB/3.png" alt="3.png"></p>
 <h1 id="安装-mongoose"><a href="#安装-mongoose" class="headerlink" title="安装 mongoose"></a>安装 mongoose</h1><p>Mongoose是在node.js异步环境下对mongodb进行便捷操作的对象模型工具</p>
 <p>We can interact with mongoose in 3 different ways:</p>
 <ol>
@@ -537,7 +535,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">42</span>
+                <span class="site-state-item-count">43</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -594,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装为windows系统服务"><span class="nav-number">2.</span> <span class="nav-text">安装为windows系统服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#新建数据库"><span class="nav-number">3.</span> <span class="nav-text">新建数据库</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-mongoose"><span class="nav-number">4.</span> <span class="nav-text">安装 mongoose</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-body-parser"><span class="nav-number">5.</span> <span class="nav-text">安装  body-parser</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#postman-发送json-数据"><span class="nav-number">6.</span> <span class="nav-text">postman 发送json 数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#附代码"><span class="nav-number">7.</span> <span class="nav-text">附代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整代码"><span class="nav-number">8.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装为windows系统服务"><span class="nav-number">2.</span> <span class="nav-text">安装为windows系统服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-mongoose"><span class="nav-number">3.</span> <span class="nav-text">安装 mongoose</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装-body-parser"><span class="nav-number">4.</span> <span class="nav-text">安装  body-parser</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#postman-发送json-数据"><span class="nav-number">5.</span> <span class="nav-text">postman 发送json 数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#附代码"><span class="nav-number">6.</span> <span class="nav-text">附代码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完整代码"><span class="nav-number">7.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
             
 
           </div>
