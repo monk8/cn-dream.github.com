@@ -1,0 +1,770 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="NodeJs,ExpressJS,REST,API,MongoDB," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="注意 User 和 Car 的 关联映射关系。实现 2个 cars api    方法 路径 描述     GET /cars lists all cars   POST /cars creates a new car    models/car.js1234567891011121314//models/car.jsconst mongoose = require(&apos;mongoose&apos;);con">
+<meta name="keywords" content="NodeJs,ExpressJS,REST,API,MongoDB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="REST-API-10-Cars-Routes-Start">
+<meta property="og:url" content="http://cn-dream.coding.me/2017/08/25/REST-API-10-Cars-Routes-Start/index.html">
+<meta property="og:site_name" content="中国梦">
+<meta property="og:description" content="注意 User 和 Car 的 关联映射关系。实现 2个 cars api    方法 路径 描述     GET /cars lists all cars   POST /cars creates a new car    models/car.js1234567891011121314//models/car.jsconst mongoose = require(&apos;mongoose&apos;);con">
+<meta property="og:updated_time" content="2017-08-25T09:06:24.468Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="REST-API-10-Cars-Routes-Start">
+<meta name="twitter:description" content="注意 User 和 Car 的 关联映射关系。实现 2个 cars api    方法 路径 描述     GET /cars lists all cars   POST /cars creates a new car    models/car.js1234567891011121314//models/car.jsconst mongoose = require(&apos;mongoose&apos;);con">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cn-dream.coding.me/2017/08/25/REST-API-10-Cars-Routes-Start/"/>
+
+
+
+
+
+  <title>REST-API-10-Cars-Routes-Start | 中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">慢慢来，理解越多，越不需要强记。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/2017/07/17/书签/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.coding.me/2017/08/25/REST-API-10-Cars-Routes-Start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">REST-API-10-Cars-Routes-Start</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-25T14:00:41+08:00">
+                2017-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/使用ExpressJS-MongoDB开发REST-API/" itemprop="url" rel="index">
+                    <span itemprop="name">使用ExpressJS+MongoDB开发REST API</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>注意 User 和 Car 的 关联映射关系。<br>实现 2个 cars api</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>路径</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>/cars</td>
+<td>lists all cars</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/cars</td>
+<td>creates a new car</td>
+</tr>
+</tbody>
+</table>
+<p>models/car.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//models/car.js</span></div><div class="line"><span class="keyword">const</span> mongoose = <span class="built_in">require</span>(<span class="string">'mongoose'</span>);</div><div class="line"><span class="keyword">const</span> Schema = mongoose.Schema;</div><div class="line"><span class="keyword">const</span> carSchema = <span class="keyword">new</span> Schema(&#123;</div><div class="line">    <span class="attr">make</span>:<span class="built_in">String</span>,</div><div class="line">    <span class="attr">model</span>:<span class="built_in">String</span>,</div><div class="line">    <span class="attr">year</span>:<span class="built_in">Number</span>,</div><div class="line">    <span class="attr">seller</span>:&#123;</div><div class="line">        <span class="attr">type</span>:Schema.Types.ObjectId,</div><div class="line">        <span class="attr">ref</span>:<span class="string">'user'</span></div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"><span class="keyword">const</span> Car = mongoose.model(<span class="string">'car'</span>,carSchema);</div><div class="line"><span class="built_in">module</span>.exports = Car;</div></pre></td></tr></table></figure></p>
+<p>controllers/cars.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//controllers/cars.js</span></div><div class="line"><span class="keyword">const</span> Car = <span class="built_in">require</span>(<span class="string">'../models/car'</span>);</div><div class="line"><span class="keyword">const</span> User = <span class="built_in">require</span>(<span class="string">'../models/user'</span>);</div><div class="line"></div><div class="line"><span class="built_in">module</span>.exports = &#123;</div><div class="line">    <span class="attr">index</span>: <span class="keyword">async</span> (req,res,next) =&gt; &#123;</div><div class="line">        <span class="comment">//Get all the cars!</span></div><div class="line">        <span class="keyword">const</span> cars = <span class="keyword">await</span> Car.find(&#123;&#125;).populate(<span class="string">'seller'</span>);</div><div class="line">        res.status(<span class="number">200</span>).json(cars);</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">newCar</span>: <span class="keyword">async</span> (req,res,next) =&gt; &#123;</div><div class="line">        <span class="comment">// 1. Find the actual seller</span></div><div class="line">        <span class="keyword">const</span> seller = <span class="keyword">await</span> User.findById(req.body.seller);</div><div class="line">        <span class="comment">// 2. Create a new car</span></div><div class="line">        <span class="keyword">const</span> newCar = req.body;</div><div class="line">        <span class="keyword">delete</span> newCar.seller;</div><div class="line">        </div><div class="line">        <span class="keyword">const</span> car = <span class="keyword">new</span> Car(newCar);</div><div class="line">        car.seller = seller;</div><div class="line">        <span class="keyword">await</span> car.save();</div><div class="line">        <span class="comment">// 3. Add newly created car to the actual seller</span></div><div class="line">        seller.cars.push(car);</div><div class="line">        <span class="keyword">await</span> seller.save();</div><div class="line"></div><div class="line">        <span class="comment">// We're done!</span></div><div class="line">        res.status(<span class="number">200</span>).json(car);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>routers/cars.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//routers/cars.js</span></div><div class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</div><div class="line"><span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">'express-promise-router'</span>)();</div><div class="line"><span class="keyword">const</span> carController = <span class="built_in">require</span>(<span class="string">'../controllers/cars'</span>);</div><div class="line"><span class="keyword">const</span> &#123; validateParam, validateBody,schemas &#125; = <span class="built_in">require</span>(<span class="string">'../helpers/routerHelpers'</span>);</div><div class="line">router.route(<span class="string">'/'</span>)</div><div class="line">    .get(carController.index)</div><div class="line">    .post(validateBody(schemas.newCarSchema), carController.newCar);</div><div class="line"><span class="built_in">module</span>.exports = router;</div></pre></td></tr></table></figure></p>
+<p>helpers/routerHelpers.js<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//helpers/routerHelpers.js</span></div><div class="line"><span class="keyword">const</span> Joi = <span class="built_in">require</span>(<span class="string">'joi'</span>);</div><div class="line"><span class="built_in">module</span>.exports = &#123; </div><div class="line">    <span class="attr">validateParam</span>:<span class="function">(<span class="params">schema,name</span>) =&gt;</span> &#123;</div><div class="line">        <span class="keyword">return</span> <span class="function">(<span class="params">req,res,next</span>) =&gt;</span> &#123;</div><div class="line">           <span class="comment">// console.log('req.params',req.params);</span></div><div class="line">            <span class="comment">//var foo = &#123;[name]:req['params'][name]&#125;;</span></div><div class="line">            <span class="comment">//var foo = &#123;name:'dd'&#125;;            </span></div><div class="line">            <span class="comment">//console.log('foo',foo);</span></div><div class="line">            <span class="keyword">const</span> result = Joi.validate(&#123;[name]:req[<span class="string">'params'</span>][name]&#125;,schema);</div><div class="line">            <span class="keyword">if</span>(result.error)&#123;</div><div class="line">                <span class="built_in">console</span>.error(result.error);</div><div class="line">                <span class="keyword">return</span> res.status(<span class="number">400</span>).json(result.error);</div><div class="line">            &#125;<span class="keyword">else</span>&#123;</div><div class="line">                <span class="keyword">if</span>(!req.value)&#123;</div><div class="line">                    req.value = &#123;&#125;;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span>(!req.value[<span class="string">'params'</span>])&#123;</div><div class="line">                    req.value[<span class="string">'params'</span>] = &#123;&#125;;</div><div class="line">                &#125;</div><div class="line">                req.value[<span class="string">'params'</span>]= result.value;</div><div class="line">                next();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">validateBody</span>:<span class="function">(<span class="params">schema</span>) =&gt;</span>&#123;</div><div class="line">        <span class="keyword">return</span><span class="function">(<span class="params">req,res,next</span>) =&gt;</span> &#123;</div><div class="line">            <span class="keyword">const</span> result = Joi.validate(req.body,schema);</div><div class="line">            <span class="keyword">if</span>(result.error)&#123;</div><div class="line">                <span class="built_in">console</span>.error(result.error);</div><div class="line">                <span class="keyword">return</span> res.status(<span class="number">400</span>).json(result.error);</div><div class="line">            &#125;<span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">if</span>(!req.value)&#123; </div><div class="line">                    req.value = &#123;&#125;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span>(!req.value[<span class="string">'body'</span>])&#123;</div><div class="line">                    req.value[<span class="string">'body'</span>] = &#123;&#125;;</div><div class="line">                &#125;</div><div class="line">                req.value[<span class="string">'body'</span>] = result.value;</div><div class="line">                next();</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">schemas</span>: &#123;</div><div class="line">        <span class="attr">userSchema</span>:&#123;</div><div class="line">            <span class="attr">firstName</span>: Joi.string().required(),</div><div class="line">            <span class="attr">lastName</span>:Joi.string().required(),</div><div class="line">            <span class="attr">email</span>:Joi.string().email().required()</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">userOptionalSchema</span>:&#123;</div><div class="line">            <span class="attr">firstName</span>: Joi.string(),</div><div class="line">            <span class="attr">lastName</span>:Joi.string(),</div><div class="line">            <span class="attr">email</span>:Joi.string().email()</div><div class="line">        &#125;,</div><div class="line">        <span class="attr">idSchema</span>: Joi.object().keys(&#123;</div><div class="line">            <span class="attr">userId</span>:Joi.string().regex(<span class="regexp">/^[0-9a-fA-F]&#123;24&#125;$/</span>).required()</div><div class="line">        &#125;),</div><div class="line">        <span class="attr">carSchema</span>: Joi.object().keys(&#123;</div><div class="line">            </div><div class="line">            <span class="attr">make</span>: Joi.string().required(),</div><div class="line">            <span class="attr">model</span>: Joi.string().required(),</div><div class="line">            <span class="attr">year</span>: Joi.number().required()</div><div class="line">        &#125;),</div><div class="line">        <span class="attr">newCarSchema</span>: Joi.object().keys(&#123;</div><div class="line">            <span class="attr">seller</span>: Joi.string().regex(<span class="regexp">/^[0-9a-fA-F]&#123;24&#125;$/</span>).required(),</div><div class="line">            <span class="attr">make</span>:Joi.string().required(),</div><div class="line">            <span class="attr">model</span>:Joi.string().required(),</div><div class="line">            <span class="attr">year</span>:Joi.number().required()</div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"> <span class="keyword">const</span> idSchema = Joi.object().keys(&#123;</div><div class="line">     <span class="attr">userId</span>:Joi.string().regex(<span class="regexp">/^[0-9a-fA-F]&#123;24&#125;$/</span>).required()</div><div class="line"> &#125;);</div></pre></td></tr></table></figure></p>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p><a href="https://github.com/monk8/expressjs-rest-api-server/tree/lesson10" target="_blank" rel="external">https://github.com/monk8/expressjs-rest-api-server/tree/lesson10</a></p>
+<blockquote>
+<p>参考<br><a href="https://www.bilibili.com/video/av11683622/#page=10" target="_blank" rel="external">https://www.bilibili.com/video/av11683622/#page=10</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/NodeJs/" rel="tag"># NodeJs</a>
+          
+            <a href="/tags/ExpressJS/" rel="tag"># ExpressJS</a>
+          
+            <a href="/tags/REST/" rel="tag"># REST</a>
+          
+            <a href="/tags/API/" rel="tag"># API</a>
+          
+            <a href="/tags/MongoDB/" rel="tag"># MongoDB</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/25/清华大学施一公：当所有精英都想干金融，这个国家一定出了大问题/" rel="next" title="清华大学施一公：当所有精英都想干金融，这个国家一定出了大问题">
+                <i class="fa fa-chevron-left"></i> 清华大学施一公：当所有精英都想干金融，这个国家一定出了大问题
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">51</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#代码"><span class="nav-number">1.</span> <span class="nav-text">代码</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
