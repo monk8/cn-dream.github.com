@@ -1,0 +1,827 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="微信公众号," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="公众号分类 订阅号为媒体和个人提供一种新的信息传播方式，构建与读者之间更好的沟通与管理模式。（个人或组织）学习使用订阅号，然后可以申请测试号，测试号将拥有所有权限。 服务号给企业和组织提供更强大的业务服务与用户管理能力，帮助企业快速实现全新的公众号服务平台。（不适用于个人）模板消息，客服接口，例如：银行发送验证码，但是布恩那个主动推送。 企业微信给企业和组织提供更强大的业务服务与用户管理能力，帮助">
+<meta name="keywords" content="微信公众号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信公众平台开发-01">
+<meta property="og:url" content="http://cn-dream.coding.me/2017/08/27/微信公众平台开发-01/index.html">
+<meta property="og:site_name" content="中国梦">
+<meta property="og:description" content="公众号分类 订阅号为媒体和个人提供一种新的信息传播方式，构建与读者之间更好的沟通与管理模式。（个人或组织）学习使用订阅号，然后可以申请测试号，测试号将拥有所有权限。 服务号给企业和组织提供更强大的业务服务与用户管理能力，帮助企业快速实现全新的公众号服务平台。（不适用于个人）模板消息，客服接口，例如：银行发送验证码，但是布恩那个主动推送。 企业微信给企业和组织提供更强大的业务服务与用户管理能力，帮助">
+<meta property="og:image" content="http://cn-dream.coding.me/2017/08/27/微信公众平台开发-01/01.png">
+<meta property="og:image" content="http://cn-dream.coding.me/2017/08/27/微信公众平台开发-01/02.png">
+<meta property="og:image" content="http://cn-dream.coding.me/2017/08/27/微信公众平台开发-01/03.png">
+<meta property="og:image" content="http://cn-dream.coding.me/2017/08/27/微信公众平台开发-01/06.png">
+<meta property="og:image" content="http://cn-dream.coding.me/2017/08/27/微信公众平台开发-01/07.png">
+<meta property="og:updated_time" content="2017-08-29T09:54:04.294Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信公众平台开发-01">
+<meta name="twitter:description" content="公众号分类 订阅号为媒体和个人提供一种新的信息传播方式，构建与读者之间更好的沟通与管理模式。（个人或组织）学习使用订阅号，然后可以申请测试号，测试号将拥有所有权限。 服务号给企业和组织提供更强大的业务服务与用户管理能力，帮助企业快速实现全新的公众号服务平台。（不适用于个人）模板消息，客服接口，例如：银行发送验证码，但是布恩那个主动推送。 企业微信给企业和组织提供更强大的业务服务与用户管理能力，帮助">
+<meta name="twitter:image" content="http://cn-dream.coding.me/2017/08/27/微信公众平台开发-01/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cn-dream.coding.me/2017/08/27/微信公众平台开发-01/"/>
+
+
+
+
+
+  <title>微信公众平台开发-01 | 中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">慢慢来，理解越多，越不需要强记。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/2017/07/17/书签/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.coding.me/2017/08/27/微信公众平台开发-01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">微信公众平台开发-01</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-27T16:31:55+08:00">
+                2017-08-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/微信公众号开发/" itemprop="url" rel="index">
+                    <span itemprop="name">微信公众号开发</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="公众号分类"><a href="#公众号分类" class="headerlink" title="公众号分类"></a>公众号分类</h1><ul>
+<li>订阅号<br>为媒体和个人提供一种新的信息传播方式，构建与读者之间更好的沟通与管理模式。（个人或组织）<br>学习使用订阅号，然后可以申请测试号，测试号将拥有所有权限。</li>
+<li>服务号<br>给企业和组织提供更强大的业务服务与用户管理能力，帮助企业快速实现全新的公众号服务平台。<br>（不适用于个人）<br>模板消息，客服接口，例如：银行发送验证码，但是布恩那个主动推送。</li>
+<li>企业微信<br>给企业和组织提供更强大的业务服务与用户管理能力，帮助企业快速实现全新的公众号服务平台。<br>（不适用于个人）</li>
+</ul>
+<h2 id="比较"><a href="#比较" class="headerlink" title="比较"></a>比较</h2><p><img src="/2017/08/27/微信公众平台开发-01/01.png" alt="1"><br><img src="/2017/08/27/微信公众平台开发-01/02.png" alt="2"><br><img src="/2017/08/27/微信公众平台开发-01/03.png" alt="3"></p>
+<p>##订阅号<br>为媒体和个人提供一种新的信息传播方式，构建与读者之间更好的沟通与管理模式。</p>
+<p><a href="https://www.bilibili.com/video/av10628238/" target="_blank" rel="external">微信公众号运营教程【01】-微信公众号怎么注册</a><br><a href="https://www.bilibili.com/video/av10628643/?from=search&amp;seid=6141056547881276092" target="_blank" rel="external">微信公众号运营教程【02】-微信公众号设置</a><br><a href="https://www.bilibili.com/video/av10628624/?from=search&amp;seid=12616095796066890350" target="_blank" rel="external">微信公众号运营教程【03】-微信公众号账号设置</a><br><a href="https://www.bilibili.com/video/av10628536/?from=search&amp;seid=12616095796066890350" target="_blank" rel="external">微信公众号运营教程【04】-如何设置公众号关注页面引导用户关注</a><br><a href="https://www.bilibili.com/video/av10628528/?from=search&amp;seid=8086113309454241769" target="_blank" rel="external">微信公众号运营教程【05】如何设置公众号关注页面引导用户关注</a><br><a href="https://www.bilibili.com/video/av10628713/?from=search&amp;seid=10421554747938087024" target="_blank" rel="external">微信公众号运营教程【06】-微信公众账号如何编辑文章1</a><br><a href="https://www.bilibili.com/video/av10628651/?from=search&amp;seid=11750063482926063384" target="_blank" rel="external">微信公众号运营教程【07】-微信公众账号如何编辑文章2</a><br><a href="http://bj.96weixin.com/" target="_blank" rel="external">微信编辑器</a></p>
+<h1 id="利用标题吸粉（好奇心，虚荣心）"><a href="#利用标题吸粉（好奇心，虚荣心）" class="headerlink" title="利用标题吸粉（好奇心，虚荣心）"></a>利用标题吸粉（好奇心，虚荣心）</h1><p><a href="https://www.bilibili.com/video/av10119033/?from=search&amp;seid=3005345427255821378#page=4" target="_blank" rel="external">【营销】公众号注册设置文章编辑发布吸粉速成教程</a></p>
+<ul>
+<li>一道小学的奥数题，看看你能作对吗？</li>
+<li>一道看似很简单的计算题，其实这道题是没有答案的！</li>
+<li>屡试不上，我自己也会被吸引进去</li>
+<li>想去征服的欲望</li>
+<li>素材：趣味测试（百度）<ul>
+<li>心理测试a</li>
+<li>悬疑题a</li>
+<li>脑筋急转弯</li>
+<li>IQ题a</li>
+<li>算术题</li>
+<li>星座测试 （抓取女性粉丝）<ul>
+<li>小女孩那一类产品相关（面膜，祛痘精准用户）</li>
+<li>经过调研，发现星座测试导过来的是18~45</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>鱼塘：<ul>
+<li>百度贴吧（相当难的一个鱼塘，很多流量团队，都在那里抓取流量，优势，流量和分类） <ul>
+<li>针对校园吧<br>  教授，你要是做出知道题，I 服了U!<br>  真正的差别就在文案上面，文案决定你引流成功60%<br>  标题因素80%，主贴本身的内容。</li>
+<li>交友吧（45万）<br>  这是楼上还是楼下，智商低于100的别进来。。<br>  挑战，不安全感，危机感，很多人会点。成功的人的，找乐子。<br>  给你5分钟的事件考虑，实在看不出来，也可以添加ec8383XXX为好友，6月22号第一条朋友圈。</li>
+<li>文案风格<ul>
+<li>萌妹子风格</li>
+<li>逗逼风格 ( 写段子 ) </li>
+<li>系统自动排查（威信）、人工主管判断（涉嫌引流、几率的问题）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>大多数人对主动添加陌生人微信很谨慎，利用这种方式，吸粉。你来加我，我才告诉你。被动等人来加的方式，筛选流量的方式。<br>这种没有自带场景，没有自带粘性的的流量，是无法变现的。建立流量，每天搜集非常有趣的素材。<br>2周，明天加300人，2周加满一个微信号。</p>
+<p>鱼饵选择：标题。天涯，只能看到一条题目。七个案例。</p>
+<ol>
+<li>答案绝对不简单，答对智商</li>
+<li>你敢试一试吗？</li>
+<li>太深奥了，简直是叼炸天，无人能解</li>
+<li>卧槽，答案太逆天了，出乎意料啊。</li>
+<li>难道一大片，难道博士生，难道教师。</li>
+<li>侦探柯南3秒看出答案，你需要花多长事件？</li>
+<li>一般人都看不出来，不懂你来！</li>
+</ol>
+<p>按照培训，能做到60分，中庸的做法</p>
+<p>玩的是文字的暗示，暗示不简单，好胜心，满足感，证明自己，如何得到答案呢？微信号</p>
+<p>假设我们需要添加大量的女性粉丝，老学员，抓流量的高手了。</p>
+<p>快粉引流八步法则<br>如果，我们要找到某一个客户群体的话</p>
+<ol>
+<li>先做客户分析（根据数据参考）</li>
+<li>寻找相关社区</li>
+<li>钓鱼式营销<br>用户分析，用户群体。</li>
+</ol>
+<p>在什么养的女性网站，才能加到女性粉丝。百度女性论坛。<br>爱美女性网 ，论坛，任何网站有社交功能，钓鱼式营销机会。</p>
+<p>微商，典型产品，面膜，护肤水，面霜，强烈的需求。</p>
+<p>浏览量高，回复低，8步法则，流量的集散地，流量的洼地，是有区别的<br>百度贴吧，团队多，竞争大，对广告敏感。小众论坛。</p>
+<p>查看帖子的标题，看回复的时间，相隔几个小时，豆瓣的论坛，帖子发出去，淘宝刷过来的，。<br>还有一个浏览量。</p>
+<p>4个帖子是连续出现的，说明有人在刷曝光率，有人在卖相关产品。</p>
+<h1 id="图片方式发布微信"><a href="#图片方式发布微信" class="headerlink" title="图片方式发布微信"></a>图片方式发布微信</h1><p>心理测试投票贴。<br><img src="/2017/08/27/微信公众平台开发-01/06.png" alt="6"></p>
+<h1 id="手机app"><a href="#手机app" class="headerlink" title="手机app"></a>手机app</h1><p>默默，首先，去默默的女神吧<br><img src="/2017/08/27/微信公众平台开发-01/07.png" alt="7"><br>连发3条，2个月前的方法，现在已经失效。<br>选在案例是推理图，这个女人会死吗？我想知道答案！有谁知道的告诉我！<br>好胜心，虚荣心，的人会跳出来，提供装B的场景，互通。</p>
+<p>个人简介上如何留下微信号。</p>
+<p>注册微信号的时候，吧手机号变成微信号，发数字就可以加了，手机号是比较隐私的东西的<br>当你吧手机号留上去的时候，表示你对别人的信任。增加信任感。</p>
+<h1 id="易企秀"><a href="#易企秀" class="headerlink" title="易企秀"></a>易企秀</h1><p><a href="http://eqxiu.com" target="_blank" rel="external">http://eqxiu.com</a></p>
+<h1 id="广告"><a href="#广告" class="headerlink" title="广告"></a>广告</h1><p><a href="https://www.bilibili.com/video/av11448963/?from=search&amp;seid=9661845421444844580" target="_blank" rel="external">关注微信公众号88优惠券操作流程</a></p>
+<h1 id="微趋道"><a href="#微趋道" class="headerlink" title="微趋道"></a>微趋道</h1><p>生活服务类，客户到门店，wifi，通过小程序，客户扫码链接wifi，很方便，技术调研。<br>面对面付款<br>优惠券<br>会员卡</p>
+<p>线下预约，到店服务，点餐，预约，线下核销<br>3999<br><a href="https://www.bilibili.com/video/av13437029/?from=search&amp;seid=11756161902105079709#page=2" target="_blank" rel="external">https://www.bilibili.com/video/av13437029/?from=search&amp;seid=11756161902105079709#page=2</a></p>
+<h1 id="发店站"><a href="#发店站" class="headerlink" title="发店站"></a>发店站</h1><ul>
+<li>发店站的营销价值：<br>  广告+宣传，轻松制作，一键发布。</li>
+<li>吸引客户消费的价值：<br>  营销+促销+红包+活动，吸引更多消费者<br>”发店站“ 是全新智慧门店营销服务系统、是帮助线下实体门店实现裂变传播最快速的方式，配合以各种营销方式；当今世界，没有比“发店站”更好的宣传模式了。<br>打破市场宣传垄断、进入自营销时代。</li>
+</ul>
+<h2 id="功能："><a href="#功能：" class="headerlink" title="功能："></a>功能：</h2><ul>
+<li>文字+ 链接+ 收心</li>
+<li>图片+二维码+吸粉</li>
+<li>活动+疯狂引流</li>
+<li>自定义表情+植入</li>
+<li>卡券+消费变现</li>
+<li>红包+品牌美誉</li>
+</ul>
+<h2 id="智慧门店营销三板斧"><a href="#智慧门店营销三板斧" class="headerlink" title="智慧门店营销三板斧"></a>智慧门店营销三板斧</h2><p>传播 + 营销 Z+引流消费 = 提高营业额</p>
+<h2 id="引流消费"><a href="#引流消费" class="headerlink" title="引流消费"></a>引流消费</h2><p>优惠券、卡券、红包、分享、裂变传播，到店消费极速容易。<br>每天吸引新客户和老客户不断消费提高50%以上几率</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/微信公众号/" rel="tag"># 微信公众号</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/26/REST-API-12-What-to-do-next/" rel="next" title="REST-API-12-What-to-do-next">
+                <i class="fa fa-chevron-left"></i> REST-API-12-What-to-do-next
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">59</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#公众号分类"><span class="nav-number">1.</span> <span class="nav-text">公众号分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#比较"><span class="nav-number">1.1.</span> <span class="nav-text">比较</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#利用标题吸粉（好奇心，虚荣心）"><span class="nav-number">2.</span> <span class="nav-text">利用标题吸粉（好奇心，虚荣心）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图片方式发布微信"><span class="nav-number">3.</span> <span class="nav-text">图片方式发布微信</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#手机app"><span class="nav-number">4.</span> <span class="nav-text">手机app</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#易企秀"><span class="nav-number">5.</span> <span class="nav-text">易企秀</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#广告"><span class="nav-number">6.</span> <span class="nav-text">广告</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#微趋道"><span class="nav-number">7.</span> <span class="nav-text">微趋道</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发店站"><span class="nav-number">8.</span> <span class="nav-text">发店站</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#功能："><span class="nav-number">8.1.</span> <span class="nav-text">功能：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#智慧门店营销三板斧"><span class="nav-number">8.2.</span> <span class="nav-text">智慧门店营销三板斧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引流消费"><span class="nav-number">8.3.</span> <span class="nav-text">引流消费</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
