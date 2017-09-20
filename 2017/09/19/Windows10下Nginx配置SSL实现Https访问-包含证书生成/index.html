@@ -1,0 +1,737 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Nginx,HTTPS,OpenSSL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="首先要说明为什么要实现https？ 　　HTTP全名超文本传输协议，客户端据此获取服务器上的超文本内容。超文本内容则以HTML为主，客户端拿到HTML内容后可根据规范进行解析呈现。因此，HTTP主要负责的是“内容的请求和获取”。问题就出在这部分。行监控、劫持、阻挡等行为很容易导致网站泄密，一些关键参数比如登录密码开发者会在客户端进行MD5加密，不过互联网所承载的机密信息远不只是密码，搜索内容同样属">
+<meta name="keywords" content="Nginx,HTTPS,OpenSSL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows10下Nginx配置SSL实现Https访问-包含证书生成">
+<meta property="og:url" content="http://cn-dream.github.io/2017/09/19/Windows10下Nginx配置SSL实现Https访问-包含证书生成/index.html">
+<meta property="og:site_name" content="中国梦">
+<meta property="og:description" content="首先要说明为什么要实现https？ 　　HTTP全名超文本传输协议，客户端据此获取服务器上的超文本内容。超文本内容则以HTML为主，客户端拿到HTML内容后可根据规范进行解析呈现。因此，HTTP主要负责的是“内容的请求和获取”。问题就出在这部分。行监控、劫持、阻挡等行为很容易导致网站泄密，一些关键参数比如登录密码开发者会在客户端进行MD5加密，不过互联网所承载的机密信息远不只是密码，搜索内容同样属">
+<meta property="og:updated_time" content="2017-09-19T09:42:23.577Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Windows10下Nginx配置SSL实现Https访问-包含证书生成">
+<meta name="twitter:description" content="首先要说明为什么要实现https？ 　　HTTP全名超文本传输协议，客户端据此获取服务器上的超文本内容。超文本内容则以HTML为主，客户端拿到HTML内容后可根据规范进行解析呈现。因此，HTTP主要负责的是“内容的请求和获取”。问题就出在这部分。行监控、劫持、阻挡等行为很容易导致网站泄密，一些关键参数比如登录密码开发者会在客户端进行MD5加密，不过互联网所承载的机密信息远不只是密码，搜索内容同样属">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cn-dream.github.io/2017/09/19/Windows10下Nginx配置SSL实现Https访问-包含证书生成/"/>
+
+
+
+
+
+  <title>Windows10下Nginx配置SSL实现Https访问-包含证书生成 | 中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">慢慢来，理解越多，越不需要强记。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/2017/07/17/书签/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.github.io/2017/09/19/Windows10下Nginx配置SSL实现Https访问-包含证书生成/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Windows10下Nginx配置SSL实现Https访问-包含证书生成</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-19T17:21:44+08:00">
+                2017-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/日积月累/" itemprop="url" rel="index">
+                    <span itemprop="name">日积月累</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>首先要说明为什么要实现https？</p>
+<p>　　HTTP全名超文本传输协议，客户端据此获取服务器上的超文本内容。超文本内容则以HTML为主，客户端拿到HTML内容后可根据规范进行解析呈现。因此，HTTP主要负责的是“内容的请求和获取”。问题就出在这部分。行监控、劫持、阻挡等行为很容易导致网站泄密，一些关键参数比如登录密码开发者会在客户端进行MD5加密，不过互联网所承载的机密信息远不只是密码，搜索内容同样属于敏感信息。现如今，百度、谷歌、Github等网站已经全站启用https，https就像是给网站上了一个“锁”，HTTPS做的就是给请求加密，让其对用户更加安全。对于自身而言除了保障用户利益外，还可避免本属于自己的流量被挟持，以保护自身利益。所以在我看来，终有一天HTTPS会实现全网普及。</p>
+<p>基本环境</p>
+<ul>
+<li>windows 10</li>
+<li>cmder</li>
+<li><a href="https://nginx.org/en/" target="_blank" rel="external">nginx</a> </li>
+</ul>
+<p>　　下面进入正题。</p>
+<p>　　说明：此教程适合已经配置好WNMP环境，并配置Virtualhost实现多站点的同学。如果您尚未配置，请参照我之前的文章进行配置。</p>
+<p>　　实现Https首先需要向管理机构申请证书，而我们此次由于是练习目的，所以通过Openssl自己生成证书。首先我们需要用到生成证书的Openssl软件。</p>
+<p>步骤：</p>
+<ol>
+<li>安装Openssl</li>
+</ol>
+<p>　　下载地址：<a href="http://slproweb.com/products/Win32OpenSSL.html" target="_blank" rel="external">http://slproweb.com/products/Win32OpenSSL.html</a> （根据系统选择32位或者64位版本下载安装）。</p>
+<p>　　下载完成后，进行安装，我安装在了 C:\wnmp\OpenSSL-Win64文件夹中。</p>
+<ol>
+<li>安装ActivePerl （此软件目的为了解析pl文件，部分系统不安装也可以实现本教程的功能，安装该软件目的为了学习perl）。</li>
+</ol>
+<p>　　下载地址：<a href="http://www.activestate.com/activeperl/downloads/" target="_blank" rel="external">http://www.activestate.com/activeperl/downloads/</a>  （根据系统选择win32或者win64版本下载安装）。</p>
+<ol>
+<li>配置环境变量</li>
+</ol>
+<p>　　在环境变量中添加环境变量</p>
+<p>　　　　变量名： OPENSSL_HOME            变量值：C:\wnmp\OpenSSL-Win64\bin;        （变量值为openssl安装位置）</p>
+<p>　　　　在path变量结尾添加如下 ： %OPENSSL_HOME%;</p>
+<ol>
+<li>生成证书　　 </li>
+</ol>
+<p>　　（1） 首先在 nginx安装目录中创建ssl文件夹用于存放证书。比如我的文件目录为 C:\wnmp\nginx\ssl</p>
+<p>　　　　　以管理员身份进入命令行模式，进入ssl文件夹。 命令为： cd  c:/wnmp/nginx/ssl</p>
+<p>　　（2） 创建私钥</p>
+<p>　　　　　在命令行中执行命令： openssl genrsa -des3 -out lee.key 1024     （lee文件名可以自定义），如下图所示：</p>
+<blockquote>
+<p>参考<br><a href="http://www.cnblogs.com/developer-ios/p/6074665.html" target="_blank" rel="external">http://www.cnblogs.com/developer-ios/p/6074665.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Nginx/" rel="tag"># Nginx</a>
+          
+            <a href="/tags/HTTPS/" rel="tag"># HTTPS</a>
+          
+            <a href="/tags/OpenSSL/" rel="tag"># OpenSSL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/14/JWT-HA256加密Token验证/" rel="next" title="JWT+HA256加密Token验证">
+                <i class="fa fa-chevron-left"></i> JWT+HA256加密Token验证
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

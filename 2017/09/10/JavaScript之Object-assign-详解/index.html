@@ -1,0 +1,716 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="中国梦，知识笔记" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="最近也一直会用javascript，然后中间使用的一些组件，如Echarts 会有非常复杂的配置文件，而大部分配置可能都是一样的，所以想着写一份通用配置，然后，其他地方需要使用的时候，用这份配置深拷贝一份配置，然后在上面继续改。就如下：12345678910111213const defaultOpt = &amp;#123;    key1: xxx,    key2: &amp;#123;        dd">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript之Object.assign()详解">
+<meta property="og:url" content="http://cn-dream.github.io/2017/09/10/JavaScript之Object-assign-详解/index.html">
+<meta property="og:site_name" content="中国梦">
+<meta property="og:description" content="最近也一直会用javascript，然后中间使用的一些组件，如Echarts 会有非常复杂的配置文件，而大部分配置可能都是一样的，所以想着写一份通用配置，然后，其他地方需要使用的时候，用这份配置深拷贝一份配置，然后在上面继续改。就如下：12345678910111213const defaultOpt = &amp;#123;    key1: xxx,    key2: &amp;#123;        dd">
+<meta property="og:updated_time" content="2017-09-10T09:26:26.724Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript之Object.assign()详解">
+<meta name="twitter:description" content="最近也一直会用javascript，然后中间使用的一些组件，如Echarts 会有非常复杂的配置文件，而大部分配置可能都是一样的，所以想着写一份通用配置，然后，其他地方需要使用的时候，用这份配置深拷贝一份配置，然后在上面继续改。就如下：12345678910111213const defaultOpt = &amp;#123;    key1: xxx,    key2: &amp;#123;        dd">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cn-dream.github.io/2017/09/10/JavaScript之Object-assign-详解/"/>
+
+
+
+
+
+  <title>JavaScript之Object.assign()详解 | 中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">慢慢来，理解越多，越不需要强记。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/2017/07/17/书签/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.github.io/2017/09/10/JavaScript之Object-assign-详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">JavaScript之Object.assign()详解</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-10T17:22:14+08:00">
+                2017-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近也一直会用javascript，然后中间使用的一些组件，如Echarts 会有非常复杂的配置文件，而大部分配置可能都是一样的，所以想着写一份通用配置，然后，其他地方需要使用的时候，用这份配置深拷贝一份配置，然后在上面继续改。就如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> defaultOpt = &#123;</div><div class="line">    <span class="attr">key1</span>: xxx,</div><div class="line">    <span class="attr">key2</span>: &#123;</div><div class="line">        <span class="attr">dd</span>: ee</div><div class="line">    &#125;,</div><div class="line">    .....</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// deepCopy为某个实现深拷贝的方法</span></div><div class="line"><span class="keyword">const</span> opt1 = deepCopy(defaultOpt);</div><div class="line">opt1.....</div><div class="line">const opt2 = deepCopy(defaultOpt);</div><div class="line">opt2.....</div></pre></td></tr></table></figure></p>
+<h1 id="深拷贝和浅拷贝"><a href="#深拷贝和浅拷贝" class="headerlink" title="深拷贝和浅拷贝"></a>深拷贝和浅拷贝</h1><p>这里也涉及到一个深拷贝和浅拷贝的概念。javascript中存储对象都是存地址的，所以浅拷贝是都指向同一块内存区块，而深拷贝则是另外开辟了一块区域。下面实例也可以看出这一点：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 浅拷贝</span></div><div class="line"><span class="keyword">const</span> a = &#123;<span class="attr">t</span>: <span class="number">1</span>, <span class="attr">p</span>: <span class="string">'gg'</span>&#125;;</div><div class="line"><span class="keyword">const</span> b = a;</div><div class="line">b.t = <span class="number">3</span>;</div><div class="line"><span class="built_in">console</span>.log(a); <span class="comment">// &#123;t: 3, p: 'gg'&#125;</span></div><div class="line"><span class="built_in">console</span>.log(b); <span class="comment">// &#123;t: 3, p: 'gg'&#125;</span></div><div class="line"></div><div class="line"><span class="comment">//深拷贝</span></div><div class="line"><span class="keyword">const</span> c = &#123;<span class="attr">t</span>: <span class="number">1</span>, <span class="attr">p</span>: <span class="string">'gg'</span>&#125;;</div><div class="line"><span class="keyword">const</span> d = deepCopy(c);</div><div class="line">d.t = <span class="number">3</span>;</div><div class="line"><span class="built_in">console</span>.log(c); <span class="comment">// &#123;t: 1, p: 'gg'&#125;</span></div><div class="line"><span class="built_in">console</span>.log(d); <span class="comment">// &#123;t: 3, p: 'gg'&#125;</span></div></pre></td></tr></table></figure></p>
+<p>可以明显看出，浅拷贝在改变其中一个值时，会导致其他也一起改变，而深拷贝不会。</p>
+<h1 id="Object-assign"><a href="#Object-assign" class="headerlink" title="Object.assign()"></a>Object.assign()</h1><p>我需要的是深拷贝的方法，然后发现原来es6 中有Object.assign() 这个方法，感觉可以拿来用了。<br>贴一下两个官方例子：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Cloning an object</span></div><div class="line"><span class="keyword">var</span> obj = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;;</div><div class="line"><span class="keyword">var</span> copy = <span class="built_in">Object</span>.assign(&#123;&#125;, obj);</div><div class="line"><span class="built_in">console</span>.log(copy); <span class="comment">// &#123; a: 1 &#125;</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Merging objects</span></div><div class="line"><span class="keyword">var</span> o1 = &#123; <span class="attr">a</span>: <span class="number">1</span> &#125;;</div><div class="line"><span class="keyword">var</span> o2 = &#123; <span class="attr">b</span>: <span class="number">2</span> &#125;;</div><div class="line"><span class="keyword">var</span> o3 = &#123; <span class="attr">c</span>: <span class="number">3</span> &#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj = <span class="built_in">Object</span>.assign(o1, o2, o3);</div><div class="line"><span class="built_in">console</span>.log(obj); <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;</span></div><div class="line"><span class="built_in">console</span>.log(o1);  <span class="comment">// &#123; a: 1, b: 2, c: 3 &#125;, target object itself is changed.</span></div></pre></td></tr></table></figure>
+<p>是不是很完美，又可以clone又可以merge。在我这种情况下，我觉得我的代码量又可以减少了，比如：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> defaultOpt = &#123;</div><div class="line">    <span class="attr">title</span>: <span class="string">'hello'</span>, </div><div class="line">    <span class="attr">name</span>: <span class="string">'oo'</span>, </div><div class="line">    <span class="attr">type</span>: <span class="string">'line'</span></div><div class="line">&#125;;</div><div class="line"><span class="comment">// 原来可能需要这样</span></div><div class="line"><span class="keyword">const</span> opt1 = deepCopy(a);</div><div class="line">opt1.title = <span class="string">'opt1'</span>;</div><div class="line">opt1.type = <span class="string">'bar'</span>;</div><div class="line">opt1.extra = <span class="string">'extra'</span>; <span class="comment">// 额外增加配置</span></div><div class="line"><span class="comment">// 现在只要这样</span></div><div class="line"><span class="keyword">const</span> opt2 = <span class="built_in">Object</span>.assign(&#123;&#125;, a, &#123;</div><div class="line">    <span class="attr">title</span>: <span class="string">'opt2'</span>, </div><div class="line">    <span class="attr">type</span>: <span class="string">'bar'</span>, </div><div class="line">    <span class="attr">extra</span>: <span class="string">'extra'</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>不过，很快，问题出现了，那就是</p>
+<p>merge和我想象的不一样</p>
+<p>且看例子：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> defaultOpt = &#123;</div><div class="line">    <span class="attr">title</span>: &#123;</div><div class="line">        <span class="attr">text</span>: <span class="string">'hello world'</span>,</div><div class="line">        <span class="attr">subtext</span>: <span class="string">'It\'s my world.'</span></div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> opt = <span class="built_in">Object</span>.assign(&#123;&#125;, defaultOpt, &#123;</div><div class="line">    <span class="attr">title</span>: &#123;</div><div class="line">        <span class="attr">subtext</span>: <span class="string">'Yes, your world.'</span></div><div class="line">    &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(opt);</div><div class="line"></div><div class="line"><span class="comment">// 预期结果</span></div><div class="line">&#123;</div><div class="line">    <span class="attr">title</span>: &#123;</div><div class="line">        <span class="attr">text</span>: <span class="string">'hello world'</span>,</div><div class="line">        <span class="attr">subtext</span>: <span class="string">'Yes, your world.'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 实际结果</span></div><div class="line">&#123;</div><div class="line">    <span class="attr">title</span>: &#123;</div><div class="line">        <span class="attr">subtext</span>: <span class="string">'Yes, your world.'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>原本想的是它只会覆盖subtext ，然而其实它直接覆盖了整个title ，这个让我比较郁闷，相当于它只merge根属性，下面的就不做处理了。<br>代码只能重构成相对麻烦一点的：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> defaultOpt = &#123;</div><div class="line">    <span class="attr">title</span>: &#123;</div><div class="line">        <span class="attr">text</span>: <span class="string">'hello world'</span>,</div><div class="line">        <span class="attr">subtext</span>: <span class="string">'It\'s my world.'</span></div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> opt = <span class="built_in">Object</span>.assign(&#123;&#125;, defaultOpt);</div><div class="line">opt.title.subtext = <span class="string">'Yes, your world.'</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(opt);</div><div class="line"><span class="comment">// 结果正常</span></div><div class="line">&#123;</div><div class="line">    <span class="attr">title</span>: &#123;</div><div class="line">        <span class="attr">text</span>: <span class="string">'hello world'</span>,</div><div class="line">        <span class="attr">subtext</span>: <span class="string">'Yes, your world.'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样用虽然麻烦一点，但是也还好，可以用了。不过。。。很快，又出现问题了，如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> defaultOpt = &#123;</div><div class="line">    <span class="attr">title</span>: &#123;</div><div class="line">        <span class="attr">text</span>: <span class="string">'hello world'</span>,</div><div class="line">        <span class="attr">subtext</span>: <span class="string">'It\'s my world.'</span></div><div class="line">    &#125; </div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> opt1 = <span class="built_in">Object</span>.assign(&#123;&#125;, defaultOpt);</div><div class="line"><span class="keyword">const</span> opt2 = <span class="built_in">Object</span>.assign(&#123;&#125;, defaultOpt);</div><div class="line">opt2.title.subtext = <span class="string">'Yes, your world.'</span>;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'opt1:'</span>);</div><div class="line"><span class="built_in">console</span>.log(opt1);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'opt2:'</span>);</div><div class="line"><span class="built_in">console</span>.log(opt2);</div><div class="line"></div><div class="line"><span class="comment">// 结果</span></div><div class="line">opt1:</div><div class="line">&#123;</div><div class="line">    <span class="attr">title</span>: &#123;</div><div class="line">        <span class="attr">text</span>: <span class="string">'hello world'</span>,</div><div class="line">        <span class="attr">subtext</span>: <span class="string">'Yes, your world.'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">opt2:</div><div class="line">&#123;</div><div class="line">    <span class="attr">title</span>: &#123;</div><div class="line">        <span class="attr">text</span>: <span class="string">'hello world'</span>,</div><div class="line">        <span class="attr">subtext</span>: <span class="string">'Yes, your world.'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面结果发现两个配置变得一模一样，而其实我们并没有去更改opt1 的subtext ，只是改了opt2 的。<br>这说明一点：在title 这一层只是简单的浅拷贝 ，而没有继续深入的深拷贝。<br>这里不经让我怀疑这个接口到底是怎么实现的，它到底是不是和我所想的一样。<br>翻了一下官方文档，发现它写得一个Polyfill ，代码我加了点注释如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> (!<span class="built_in">Object</span>.assign) &#123;</div><div class="line">    <span class="comment">// 定义assign方法</span></div><div class="line">  <span class="built_in">Object</span>.defineProperty(<span class="built_in">Object</span>, <span class="string">'assign'</span>, &#123;</div><div class="line">    <span class="attr">enumerable</span>: <span class="literal">false</span>,</div><div class="line">    <span class="attr">configurable</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">writable</span>: <span class="literal">true</span>,</div><div class="line">    <span class="attr">value</span>: <span class="function"><span class="keyword">function</span>(<span class="params">target</span>) </span>&#123; <span class="comment">// assign方法的第一个参数</span></div><div class="line"><span class="meta">      'use strict'</span>;</div><div class="line">      <span class="comment">// 第一个参数为空，则抛错</span></div><div class="line">      <span class="keyword">if</span> (target === <span class="literal">undefined</span> || target === <span class="literal">null</span>) &#123;</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">TypeError</span>(<span class="string">'Cannot convert first argument to object'</span>);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      <span class="keyword">var</span> to = <span class="built_in">Object</span>(target);</div><div class="line">      <span class="comment">// 遍历剩余所有参数</span></div><div class="line">      <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>; i &lt; <span class="built_in">arguments</span>.length; i++) &#123;</div><div class="line">        <span class="keyword">var</span> nextSource = <span class="built_in">arguments</span>[i];</div><div class="line">        <span class="comment">// 参数为空，则跳过，继续下一个</span></div><div class="line">        <span class="keyword">if</span> (nextSource === <span class="literal">undefined</span> || nextSource === <span class="literal">null</span>) &#123;</div><div class="line">          <span class="keyword">continue</span>;</div><div class="line">        &#125;</div><div class="line">        nextSource = <span class="built_in">Object</span>(nextSource);</div><div class="line"></div><div class="line">        <span class="comment">// 获取改参数的所有key值，并遍历</span></div><div class="line">        <span class="keyword">var</span> keysArray = <span class="built_in">Object</span>.keys(nextSource);</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> nextIndex = <span class="number">0</span>, len = keysArray.length; nextIndex &lt; len; nextIndex++) &#123;</div><div class="line">          <span class="keyword">var</span> nextKey = keysArray[nextIndex];</div><div class="line">          <span class="keyword">var</span> desc = <span class="built_in">Object</span>.getOwnPropertyDescriptor(nextSource, nextKey);</div><div class="line">          <span class="comment">// 如果不为空且可枚举，则直接浅拷贝赋值</span></div><div class="line">          <span class="keyword">if</span> (desc !== <span class="literal">undefined</span> &amp;&amp; desc.enumerable) &#123;</div><div class="line">            to[nextKey] = nextSource[nextKey];</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> to;</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>上面的代码可以直接说明它只对顶层属性做了赋值，完全没有继续做递归之类的把所有下一层的属性做深拷贝。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Object.assign() 只是一级属性复制，比浅拷贝多深拷贝了一层而已。用的时候，还是要注意这个问题的。</p>
+<p>附</p>
+<p>发现一个可以简单实现深拷贝的方法，当然，有一定限制，如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> obj1 = <span class="built_in">JSON</span>.parse(<span class="built_in">JSON</span>.stringify(obj));</div></pre></td></tr></table></figure></p>
+<p>思路就是将一个对象转成json字符串，然后又将字符串转回对象。</p>
+<blockquote>
+<p>参考<br><a href="http://blog.csdn.net/waiterwaiter/article/details/50267787" target="_blank" rel="external">http://blog.csdn.net/waiterwaiter/article/details/50267787</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/09/NodeJS中导入模块require和import区别/" rel="next" title="NodeJS中导入模块require和import区别">
+                <i class="fa fa-chevron-left"></i> NodeJS中导入模块require和import区别
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/13/从两个方面谈光电鼠标灵敏度变差的原因/" rel="prev" title="从两个方面谈光电鼠标灵敏度变差的原因">
+                从两个方面谈光电鼠标灵敏度变差的原因 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">72</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">71</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#深拷贝和浅拷贝"><span class="nav-number">1.</span> <span class="nav-text">深拷贝和浅拷贝</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Object-assign"><span class="nav-number">2.</span> <span class="nav-text">Object.assign()</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
