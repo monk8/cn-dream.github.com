@@ -1,0 +1,781 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="中国梦，知识笔记" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="在刚结束的全球互联网技术大会（GITC）里面，我在前端专场给大家分享了「微信小程序云端解决方案探索之路」，介绍到了我们之前对小程序云端解决方案的探索过程。 小程序特性思考 小程序刚推出的时候，很多人都觉得它就是 H5，因为开发小程序的三大语言和 HTML、CSS、JS 是一脉相承的，即使改变了扩展名也改不了其实质。 那么小程序的实质到底是不是 H5 呢？经过我们的论证分析，我们认为小程序并不是 H">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信小程序云端解决方案探索之路-GITC主题演讲">
+<meta property="og:url" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/index.html">
+<meta property="og:site_name" content="种花家-中国梦">
+<meta property="og:description" content="在刚结束的全球互联网技术大会（GITC）里面，我在前端专场给大家分享了「微信小程序云端解决方案探索之路」，介绍到了我们之前对小程序云端解决方案的探索过程。 小程序特性思考 小程序刚推出的时候，很多人都觉得它就是 H5，因为开发小程序的三大语言和 HTML、CSS、JS 是一脉相承的，即使改变了扩展名也改不了其实质。 那么小程序的实质到底是不是 H5 呢？经过我们的论证分析，我们认为小程序并不是 H">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/1.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/2.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/3.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/4.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/5.gif">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/6.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/7.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/8.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/9.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/10.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/11.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/12.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/13.png">
+<meta property="og:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/14.png">
+<meta property="og:updated_time" content="2017-10-03T03:54:39.639Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信小程序云端解决方案探索之路-GITC主题演讲">
+<meta name="twitter:description" content="在刚结束的全球互联网技术大会（GITC）里面，我在前端专场给大家分享了「微信小程序云端解决方案探索之路」，介绍到了我们之前对小程序云端解决方案的探索过程。 小程序特性思考 小程序刚推出的时候，很多人都觉得它就是 H5，因为开发小程序的三大语言和 HTML、CSS、JS 是一脉相承的，即使改变了扩展名也改不了其实质。 那么小程序的实质到底是不是 H5 呢？经过我们的论证分析，我们认为小程序并不是 H">
+<meta name="twitter:image" content="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/"/>
+
+
+
+
+
+  <title>微信小程序云端解决方案探索之路-GITC主题演讲 | 种花家-中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">种花家-中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">慢慢来，理解越多，越不需要强记。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/2017/07/17/书签/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://115.159.147.228/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="种花家-中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">微信小程序云端解决方案探索之路-GITC主题演讲</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-03T11:03:52+08:00">
+                2017-10-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在刚结束的<a href="http://www.thegitc.com/" target="_blank" rel="external">全球互联网技术大会（GITC）</a>里面，我在前端专场给大家分享了「微信小程序云端解决方案探索之路」，介绍到了我们之前对小程序云端解决方案的探索过程。</p>
+<h1 id="小程序特性思考"><a href="#小程序特性思考" class="headerlink" title="小程序特性思考"></a>小程序特性思考</h1><hr>
+<p>小程序刚推出的时候，很多人都觉得它就是 H5，因为开发小程序的三大语言和 HTML、CSS、JS 是一脉相承的，即使改变了扩展名也改不了其实质。</p>
+<p>那么小程序的实质到底是不是 H5 呢？经过我们的论证分析，我们认为<span style="background: yellow;color: green;">小程序并不是 H5 应用</span> 。主要原因如下：</p>
+<ol>
+<li>在小程序里面无法使用 DOM 接口，所以 HTML5 生态中一切基于 DOM 的库都无法使用（如 jQuery）</li>
+<li>小程序并非使用 URL 访问，所以没有域名的概念。这个特性有两个影响<ul>
+<li>不存在跨域问题，所以访问控制是直接在微信 MP 上配置域名白名单</li>
+<li>不支持 Cookie 存储，这将导致后面我们重点研究了会话管理的实现</li>
+</ul>
+</li>
+</ol>
+<p>从上面两个角度来考虑，我们认为小程序更偏向于传统的 CS 架构。</p>
+<p>那么，小程序和传统 CS 架构的区别在哪儿？主要包括下面两点：</p>
+<ol>
+<li>网络和续航<br>小程序在移动端运行，网络环境会比较复杂，频繁的网络连接可能会过度消耗资源导致续航下降，所以小程序对网络和资源的优化都提出了要求。</li>
+<li>伸缩能力<br>小程序寄托在微信平台上运行，作为一个十亿级的社交平台，业务可能会面临爆炸式的增长。如果在爆点小程序不能快速伸缩应对，那么将失去这样一个重要的机会。所以小程序对其后台架构的伸缩能力提出了比较高的要求。</li>
+</ol>
+<h1 id="门槛和挑战"><a href="#门槛和挑战" class="headerlink" title="门槛和挑战"></a>门槛和挑战</h1><hr>
+<p>在上面一些结论下，我们进行了一些尝试，包括上传下载、会话管理、WebSocket、视频点播等等。这次重点来分享会话管理和 WebSocket，因为我们面临的挑战主要集中在这两个案例上。</p>
+<h2 id="会话管理"><a href="#会话管理" class="headerlink" title="会话管理"></a>会话管理</h2><p>我们最早开发了一个一笔到底的案例来实现会话管理，案例需要根据用户保存用户的作品，每次用户登录，都可以看到用户自己的绘画。</p>
+<p>但是，因为小程序不支持 Cookie 传输，所以会话服务需要自行实现。</p>
+<p>我们会话管理的实现目标是：</p>
+<ol>
+<li>完成微信要求的鉴权流程，生成用户会话</li>
+<li>利用会话确定每个请求对应哪个微信用户</li>
+<li>安全性和扩展性满足要求</li>
+</ol>
+<p>我们案例按照这个流程进行会话建立：<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/1.png" alt=""></p>
+<p>其中在小程序和服务器我们分别提供 JS 和 Node SDK 来提供会话支持。这个案例完成了会话服务的功能性目标，可以提供会话建立和验证的能力。但是弊端在于，该能力只能被 Node 开发者使用，其他语言的开发者无法使用。同时，因为小程序的 appId 和 appSecret 存放在外网可以访问的服务器上，也有一定安全性问题。会话服务和我们的业务耦合在一起，也给后续的横向扩展带来了麻烦。</p>
+<p>于是，我们提出了改进的手段：</p>
+<ol>
+<li>会话管理服务器独立提供</li>
+<li>提供多语言的 SDK</li>
+<li>appId 和 appSecret 存放到数据库中<br>其中多语言的 SDK 正式因为会话管理服务器的独立而可以快速开发到。</li>
+</ol>
+<p>优化后，会话的建立流程如下图所示：<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/2.png" alt=""></p>
+<p>而会话的验证流程如下图所示：<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/3.png" alt=""></p>
+<p>我们的会话服务改进取得的效果还是很明显的：</p>
+<ol>
+<li>流程和安全性上完全符合了微信的鉴权要求</li>
+<li>独立会话服务器，可以方便进行独立的升级和扩展，也为多语言 SDK 的开发打开了方便的大门</li>
+</ol>
+<h2 id="信道服务"><a href="#信道服务" class="headerlink" title="信道服务"></a>信道服务</h2><p>我们面临的另外一个挑战就是 WebSocket。在进行案例分析之前，先跟大家分析一下微信支持 WebSocket 的原因。</p>
+<p>传统的 HTTPS 连接请求，每个请求都需要建立一次连接，耗费比较多的资源。同时微信有最大连接数的限制（5个），所以实时通信的需求不好做，长连接的方案也只能串行传输，这种方案耗电高体验差。</p>
+<p>当我们把目光转向 WebSocket 之后，会发现 WebSocket 通信全程只需要建立一次连接，就可以实现双向的实时通信，更省电的情况下获得更好的体验。</p>
+<p>这就是小程序支持 WebSocket 的一个重要原因，可以提高业务的体验并增加续航。</p>
+<p>鉴于很多同学可能对 WebSocket 还不了解，这里简单介绍一下。</p>
+<p><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/4.png" alt=""></p>
+<p>我们的 HTTP 连接是在 TCP 的基础上建立的，当服务器支持 WebSocket 的时候，可以相应一个头部，告知客户端进行协议升级。升级协议后，会复用之前的 TCP 连接，在上面实现 WebSocket 协议实现双向通信。更加详细的资料可以参考 <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket" target="_blank" rel="external">MDN</a> 上的说明。</p>
+<p>回到我们的案例上来，我们当时使用小程序提供的 WebSocket 做了一个实时的<a href="https://github.com/CFETeam/weapp-demo-websocket" target="_blank" rel="external">剪刀石头布</a>游戏。<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/5.gif" alt=""></p>
+<p>我们使用 Socket.IO 实现其后端后，发现在小程序无法使用 Socket.IO 的客户端代码支持。我们只能自己去啃了一下 Socket.IO 的上层协议，实现了一个简版的客户端，从而实现剪刀石头布这个游戏逻辑。</p>
+<p>这个案例验证了在小程序上面 WebSocket 的可行性，但是由于客户端的实现是自行实现，和 Socket.IO 的后端配合可能会出现不可控的情况。同时，我们发现 WebSocket 的后端实现门槛比较高，并且进行横向扩展的话会更加困难。</p>
+<p>作为云服务厂商，我们首先想到的方案是使用 PaaS 提供服务来支持 WebSocket 连接。这是怎么一个思路呢？</p>
+<p><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/6.png" alt=""><br>上图很好地解释了 PaaS 形式和传统 WebSocket 形式的不同之处，PaaS 实际上是要实现一个三方通信。</p>
+<p>我们看一下使用 PaaS 服务来建立 WebSocket 连接的过程：<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/7.png" alt=""><br>建立连接后，小程序和业务服务器之间可以通过下面的形式进行通信：<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/8.png" alt=""><br>经过 PaaS 的改造，我们得到了一个新的 WebSocket 方案。该方案的优劣在哪里？</p>
+<p>首先，优势比较明显，由平台来提供的服务，由平台自己完成扩展能力的支持以及稳定性和性能的保障，业务无需担心。同时，业务也无需关心 WebSocket 协议的实现，因为业务服务器和信道服务之前的通信都是传统的 HTTP，这样也可以节约业务服务器的长连接资源。</p>
+<p>但是这种方案也有它的局限之处。业务服务器和信道服务器之间采取公网通信，处于对信息安全的考虑，最好还是走 HTTPS 通信，这个过程的通信延迟比较客观。其次，三方通信的调试便利性也不如传统的连接方式。</p>
+<p>对于上面两个问题，其实我们也有对应方案。如果业务服务器在腾讯云机房运行，那么可以让业务服务器和信道服务器之间通过内网 HTTP 传输，延迟大大降低。信道服务后续也会提供调试日志供大家分析发现问题。</p>
+<p>总体来说，PaaS 方案会帮助更多开发者解决掉了门槛较高的部分。</p>
+<h1 id="整合"><a href="#整合" class="headerlink" title="整合"></a>整合</h1><hr>
+<p>我们上面对于会话服务和信道服务都进行了一个有益的实践，那么这两个服务是否可以整合，信道服务里面是否可以支持会话识别？</p>
+<p>事实上我们可以做这个事情。下面的表格描述了会话服务和信道服务与服务模块之间的关系。<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/9.png" alt=""><br>我们可以把客户端的部分整合为客户端 SDK，把业务服务器的部分整合为服务器 SDK，并且提供会话服务器的源码开源。</p>
+<p>那么上面三个部分加起来，就是目前腾讯云的开源项目 - Wafer。</p>
+<p>Wafer 包含了会话服务和信道服务的支持，从全栈模块来提供开源的资源，并且提供了丰富的文档。有兴趣的开发者可以使用上面的连接来查看 Wafer 项目。</p>
+<h1 id="产品化实践"><a href="#产品化实践" class="headerlink" title="产品化实践"></a>产品化实践</h1><hr>
+<p><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/10.png" alt=""><br>Wafer 帮开发者解决了小程序开发过程中信道服务和会话服务的门槛问题，但是作为小程序开发者，还要关心后台架构、资源采供、资源部署、扩展能力、安全性、域名申请等等与业务开发无关的部分。这部分，我们提出了一个一站式部署的方案。<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/11.png" alt=""><br>这个方案，会帮你分配好资源并自动部署下面的架构，让开发者可以专注于业务开发。<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/12.png" alt=""><br>自动部署的过程其实挺复杂的，有兴趣的同学可以参考下图了解。<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/13.png" alt=""><br>上面就是 Wafer 的产品化实践 - 腾讯云小程序一站式解决方案。也可以扫码了解更多信息：<br><img src="/2017/10/03/微信小程序云端解决方案探索之路-GITC主题演讲/14.png" alt=""></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><hr>
+<p>从 16 年 9 月份开始，团队开始接触微信小程序，对它的一个特性进行了思考和验证。在后面案例开发的过程中，碰到了会话服务和信道服务的两个门槛，不断优化，最终整合成了开源项目 <a href="https://github.com/tencentyun/wafer" target="_blank" rel="external">Wafer</a> 及其<a href="https://www.qcloud.com/solution/la.html?utm_source=gitblog&amp;utm_medium=github&amp;utm_campaign=qcloud" target="_blank" rel="external">产品化方案</a>，希望这些方案可以对小程序开发者提供帮助。</p>
+<p>GITC 主题演讲的幻灯片可以在<a href="https://github.com/tencentyun/blog/raw/master/GITC-2016-Keynote.pdf" target="_blank" rel="external">这里</a>下载。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/03/Cmder中文显示乱码解决方案/" rel="next" title="Cmder中文显示乱码解决方案">
+                <i class="fa fa-chevron-left"></i> Cmder中文显示乱码解决方案
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/03/利用ssh的用户配置文件config管理ssh会话/" rel="prev" title="利用ssh的用户配置文件config管理ssh会话">
+                利用ssh的用户配置文件config管理ssh会话 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">76</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">77</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#小程序特性思考"><span class="nav-number">1.</span> <span class="nav-text">小程序特性思考</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#门槛和挑战"><span class="nav-number">2.</span> <span class="nav-text">门槛和挑战</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#会话管理"><span class="nav-number">2.1.</span> <span class="nav-text">会话管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#信道服务"><span class="nav-number">2.2.</span> <span class="nav-text">信道服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#整合"><span class="nav-number">3.</span> <span class="nav-text">整合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#产品化实践"><span class="nav-number">4.</span> <span class="nav-text">产品化实践</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
