@@ -1,0 +1,787 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="nodejs,日积月累,PM2," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="简介PM2是node进程管理工具，可以利用它来简化很多node应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，而且使用非常简单。 下面就对PM2进行入门性的介绍，基本涵盖了PM2的常用的功能和配置。 安装全局安装，简直不能更简单。1npm install -g pm2 目录介绍pm2安装好后，会自动创建下面目录。看文件名基本就知道干嘛的了，就不翻译了。  $HOME/.pm2 will co">
+<meta name="keywords" content="nodejs,日积月累,PM2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PM2入门指南">
+<meta property="og:url" content="http://cn-dream.github.io/2017/10/18/PM2入门指南/index.html">
+<meta property="og:site_name" content="中国梦">
+<meta property="og:description" content="简介PM2是node进程管理工具，可以利用它来简化很多node应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，而且使用非常简单。 下面就对PM2进行入门性的介绍，基本涵盖了PM2的常用的功能和配置。 安装全局安装，简直不能更简单。1npm install -g pm2 目录介绍pm2安装好后，会自动创建下面目录。看文件名基本就知道干嘛的了，就不翻译了。  $HOME/.pm2 will co">
+<meta property="og:image" content="http://cn-dream.github.io/2017/10/18/PM2入门指南/01.jpg">
+<meta property="og:updated_time" content="2017-10-18T09:41:05.059Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PM2入门指南">
+<meta name="twitter:description" content="简介PM2是node进程管理工具，可以利用它来简化很多node应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，而且使用非常简单。 下面就对PM2进行入门性的介绍，基本涵盖了PM2的常用的功能和配置。 安装全局安装，简直不能更简单。1npm install -g pm2 目录介绍pm2安装好后，会自动创建下面目录。看文件名基本就知道干嘛的了，就不翻译了。  $HOME/.pm2 will co">
+<meta name="twitter:image" content="http://cn-dream.github.io/2017/10/18/PM2入门指南/01.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cn-dream.github.io/2017/10/18/PM2入门指南/"/>
+
+
+
+
+
+  <title>PM2入门指南 | 中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">慢慢来，理解越多，越不需要强记。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/2017/07/17/书签/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.github.io/2017/10/18/PM2入门指南/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">PM2入门指南</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T17:11:11+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>PM2是node进程管理工具，可以利用它来简化很多node应用管理的繁琐任务，如性能监控、自动重启、负载均衡等，而且使用非常简单。</p>
+<p>下面就对PM2进行入门性的介绍，基本涵盖了PM2的常用的功能和配置。</p>
+<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>全局安装，简直不能更简单。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g pm2</div></pre></td></tr></table></figure></p>
+<h1 id="目录介绍"><a href="#目录介绍" class="headerlink" title="目录介绍"></a>目录介绍</h1><p>pm2安装好后，会自动创建下面目录。看文件名基本就知道干嘛的了，就不翻译了。</p>
+<ul>
+<li>$HOME/.pm2 will contain all PM2 related files</li>
+<li>$HOME/.pm2/logs will contain all applications logs</li>
+<li>$HOME/.pm2/pids will contain all applications pids</li>
+<li>$HOME/.pm2/pm2.log PM2 logs</li>
+<li>$HOME/.pm2/pm2.pid PM2 pid</li>
+<li>$HOME/.pm2/rpc.sock Socket file for remote commands</li>
+<li>$HOME/.pm2/pub.sock Socket file for publishable events</li>
+<li>$HOME/.pm2/conf.js PM2 Configuration</li>
+</ul>
+<h1 id="入门教程"><a href="#入门教程" class="headerlink" title="入门教程"></a>入门教程</h1><p>挑我们最爱的express应用来举例。一般我们都是通过npm start启动应用，其实就是调用node ./bin/www。那么，换成pm2就是</p>
+<p>注意，这里用了–watch参数，意味着当你的express应用代码发生变化时，pm2会帮你重启服务，多贴心。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 start ./bin/www --watch</div></pre></td></tr></table></figure></p>
+<p>入门太简单了，没什么好讲的。直接上官方文档：<a href="http://pm2.keymetrics.io/docs/usage/quick-start" target="_blank" rel="external">http://pm2.keymetrics.io/docs/usage/quick-start</a></p>
+<h1 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h1><h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><p>参数说明：</p>
+<ul>
+<li>–watch：监听应用目录的变化，一旦发生变化，自动重启。如果要精确监听、不监听的目录，最好通过配置文件。</li>
+<li>-i –instances：启用多少个实例，可用于负载均衡。如果-i 0或者-i max，则根据当前机器核数确定实例数目。</li>
+<li>–ignore-watch：排除监听的目录/文件，可以是特定的文件名，也可以是正则。比如–ignore-watch=”test node_modules “some scripts””</li>
+<li>-n –name：应用的名称。查看应用信息的时候可以用到。</li>
+<li>-o –output &lt;path&gt;：标准输出日志文件的路径。</li>
+<li>-e –error &lt;path&gt;：错误输出日志文件的路径。</li>
+<li>–interpreter &lt;interpreter&gt;：the interpreter pm2 should use for executing app (bash, python…)。比如你用的coffee script来编写应用。<br>完整命令行参数列表：地址<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 start app.js --watch -i 2</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 restart app.js</div></pre></td></tr></table></figure>
+<h2 id="停止"><a href="#停止" class="headerlink" title="停止"></a>停止</h2><p>停止特定的应用。可以先通过pm2 list获取应用的名字（–name指定的）或者进程id。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 stop app_name|app_id</div></pre></td></tr></table></figure></p>
+<p>如果要停止所有应用，可以<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 stop all</div></pre></td></tr></table></figure></p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>类似pm2 stop，如下<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pm2 stop app_name|app_id</div><div class="line">pm2 stop all</div></pre></td></tr></table></figure></p>
+<h2 id="查看进程状态"><a href="#查看进程状态" class="headerlink" title="查看进程状态"></a>查看进程状态</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 list</div></pre></td></tr></table></figure>
+<h2 id="查看某个进程的信息"><a href="#查看某个进程的信息" class="headerlink" title="查看某个进程的信息"></a>查看某个进程的信息</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># pm2 describe 0</span></div><div class="line">Describing process with id 0 - name oc-server</div><div class="line">┌───────────────────┬──────────────────────────────────────────────────────────────┐</div><div class="line">│ status            │ online                                                       │</div><div class="line">│ name              │ oc-server                                                    │</div><div class="line">│ id                │ 0                                                            │</div><div class="line">│ path              │ /data/file/qiquan/over_the_counter/server/bin/www            │</div><div class="line">│ args              │                                                              │</div><div class="line">│ <span class="built_in">exec</span> cwd          │ /data/file/qiquan/over_the_counter/server                    │</div><div class="line">│ error <span class="built_in">log</span> path    │ /data/file/qiquan/over_the_counter/server/logs/app-err-0.log │</div><div class="line">│ out <span class="built_in">log</span> path      │ /data/file/qiquan/over_the_counter/server/logs/app-out-0.log │</div><div class="line">│ pid path          │ /root/.pm2/pids/oc-server-0.pid                              │</div><div class="line">│ mode              │ fork_mode                                                    │</div><div class="line">│ node v8 arguments │                                                              │</div><div class="line">│ watch &amp; reload    │                                                             │</div><div class="line">│ interpreter       │ node                                                         │</div><div class="line">│ restarts          │ 293                                                          │</div><div class="line">│ unstable restarts │ 0                                                            │</div><div class="line">│ uptime            │ 87m                                                          │</div><div class="line">│ created at        │ 2016-08-26T08:13:43.705Z                                     │</div><div class="line">└───────────────────┴──────────────────────────────────────────────────────────────┘</div></pre></td></tr></table></figure>
+<h1 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h1><p>简单说明</p>
+<ul>
+<li>配置文件里的设置项，跟命令行参数基本是一一对应的。</li>
+<li>可以选择yaml或者json文件，就看个人洗好了。</li>
+<li>json格式的配置文件，pm2当作普通的js文件来处理，所以可以在里面添加注释或者编写代码，这对于动态调整配置很有好处。</li>
+<li>如果启动的时候指定了配置文件，那么命令行参数会被忽略。（个别参数除外，比如–env）<br>例子</li>
+</ul>
+<p>举个简单例子，完整配置说明请参考官方文档。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="string">"name"</span>        : <span class="string">"fis-receiver"</span>,  // 应用名称</div><div class="line">  <span class="string">"script"</span>      : <span class="string">"./bin/www"</span>,  // 实际启动脚本</div><div class="line">  <span class="string">"cwd"</span>         : <span class="string">"./"</span>,  // 当前工作路径</div><div class="line">  <span class="string">"watch"</span>: [  // 监控变化的目录，一旦变化，自动重启</div><div class="line">    <span class="string">"bin"</span>,</div><div class="line">    <span class="string">"routers"</span></div><div class="line">  ],</div><div class="line">  <span class="string">"ignore_watch"</span> : [  // 从监控目录中排除</div><div class="line">    <span class="string">"node_modules"</span>, </div><div class="line">    <span class="string">"logs"</span>,</div><div class="line">    <span class="string">"public"</span></div><div class="line">  ],</div><div class="line">  <span class="string">"watch_options"</span>: &#123;</div><div class="line">    <span class="string">"followSymlinks"</span>: <span class="literal">false</span></div><div class="line">  &#125;,</div><div class="line">  <span class="string">"error_file"</span> : <span class="string">"./logs/app-err.log"</span>,  // 错误日志路径</div><div class="line">  <span class="string">"out_file"</span>   : <span class="string">"./logs/app-out.log"</span>,  // 普通日志路径</div><div class="line">  <span class="string">"env"</span>: &#123;</div><div class="line">      <span class="string">"NODE_ENV"</span>: <span class="string">"production"</span>  // 环境参数，当前指定为生产环境</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h1 id="自动重启"><a href="#自动重启" class="headerlink" title="自动重启"></a>自动重启</h1><p>前面已经提到了，这里贴命令行，更多点击这里。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 start app.js --watch</div></pre></td></tr></table></figure></p>
+<p>这里是监控整个项目的文件，如果只想监听指定文件和目录，建议通过配置文件的watch、ignore_watch字段来设置。</p>
+<h1 id="环境切换"><a href="#环境切换" class="headerlink" title="环境切换"></a>环境切换</h1><p>在实际项目开发中，我们的应用经常需要在多个环境下部署，比如开发环境、测试环境、生产环境等。在不同环境下，有时候配置项会有差异，比如链接的数据库地址不同等。</p>
+<p>对于这种场景，pm2也是可以很好支持的。首先通过在配置文件中通过env_xx来声明不同环境的配置，然后在启动应用时，通过–env参数指定运行的环境。</p>
+<h2 id="环境配置声明"><a href="#环境配置声明" class="headerlink" title="环境配置声明"></a>环境配置声明</h2><p>首先，在配置文件中，通过env选项声明多个环境配置。简单说明下：</p>
+<p>env为默认的环境配置（生产环境），env_dev、env_test则分别是开发、测试环境。可以看到，不同环境下的NODE_ENV、REMOTE_ADDR字段的值是不同的。<br>在应用中，可以通过process.env.REMOTE_ADDR等来读取配置中生命的变量。<br> <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">"env": &#123;</div><div class="line">  "NODE_ENV": "production",</div><div class="line">  "REMOTE_ADDR": "http://www.example.com/"</div><div class="line">&#125;,</div><div class="line">"env_dev": &#123;</div><div class="line">  "NODE_ENV": "development",</div><div class="line">  "REMOTE_ADDR": "http://wdev.example.com/"</div><div class="line">&#125;,</div><div class="line">"env_test": &#123;</div><div class="line">  "NODE_ENV": "test",</div><div class="line">  "REMOTE_ADDR": "http://wtest.example.com/"</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="启动指明环境"><a href="#启动指明环境" class="headerlink" title="启动指明环境"></a>启动指明环境</h2><p>假设通过下面启动脚本（开发环境），那么，此时process.env.REMOTE_ADDR的值就是相应的 <a href="http://wdev.example.com/" target="_blank" rel="external">http://wdev.example.com/</a> ，可以自己试验下。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 start app.js --env dev</div></pre></td></tr></table></figure></p>
+<h1 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h1><p>命令如下，表示开启三个进程。如果-i 0，则会根据机器当前核数自动开启尽可能多的进程。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pm2 start app.js -i 3 <span class="comment"># 开启三个进程</span></div><div class="line">pm2 start app.js -i max <span class="comment"># 根据机器CPU核数，开启对应数目的进程</span></div></pre></td></tr></table></figure></p>
+<p>参考文档：<a href="http://pm2.keymetrics.io/docs/usage/cluster-mode/#automatic-load-balancing" target="_blank" rel="external">点击查看</a></p>
+<h1 id="日志查看"><a href="#日志查看" class="headerlink" title="日志查看"></a>日志查看</h1><p>除了可以打开日志文件查看日志外，还可以通过pm2 logs来查看实时日志。这点对于线上问题排查非常重要。</p>
+<p>比如某个node服务突然异常重启了，那么可以通过pm2提供的日志工具来查看实时日志，看是不是脚本出错之类导致的异常重启。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 logs</div></pre></td></tr></table></figure></p>
+<h1 id="指令tab补全"><a href="#指令tab补全" class="headerlink" title="指令tab补全"></a>指令tab补全</h1><p>运行pm2 –help，可以看到pm2支持的子命令还是蛮多的，这个时候，自动完成的功能就很重要了。</p>
+<p>运行如下命令。恭喜，已经能够通过tab自动补全了。细节可参考<a href="http://pm2.keymetrics.io/docs/usage/auto-completion/" target="_blank" rel="external">这里</a>。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">pm2 completion install</div><div class="line"><span class="built_in">source</span> ~/.bash_profile</div></pre></td></tr></table></figure></p>
+<p>Alt text</p>
+<h1 id="开机自动启动"><a href="#开机自动启动" class="headerlink" title="开机自动启动"></a>开机自动启动</h1><p>可以通过pm2 startup来实现开机自启动。细节可参考。大致流程如下</p>
+<ol>
+<li>通过pm2 save保存当前进程状态。</li>
+<li>通过pm2 startup [platform]生成开机自启动的命令。（记得查看控制台输出）</li>
+<li>将步骤2生成的命令，粘贴到控制台进行，搞定。</li>
+</ol>
+<h1 id="传入node-args"><a href="#传入node-args" class="headerlink" title="传入node args"></a>传入node args</h1><p>直接上例子，分别是通过命令行和配置文件。</p>
+<p>命令行：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 start app.js --node-args=<span class="string">"--harmony"</span></div></pre></td></tr></table></figure></p>
+<p>配置文件：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"name"</span> : <span class="string">"oc-server"</span>,</div><div class="line">  <span class="attr">"script"</span> : <span class="string">"app.js"</span>,</div><div class="line">  <span class="attr">"node_args"</span> : <span class="string">"--harmony"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="实例说明"><a href="#实例说明" class="headerlink" title="实例说明"></a>实例说明</h2><p>假设是在centos下，那么运行如下命令，搞定。强烈建议运行完成之后，重启机器，看是否设置成功。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@iZ94wb7tioqZ option_analysis]<span class="comment"># pm2 save</span></div><div class="line">[root@iZ94wb7tioqZ option_analysis]<span class="comment"># pm2 startup centos</span></div><div class="line">[PM2] Generating system init script <span class="keyword">in</span> /etc/init.d/pm2-init.sh</div><div class="line">[PM2] Making script booting at startup...</div><div class="line">[PM2] /var/lock/subsys/pm2-init.sh lockfile has been added</div><div class="line">[PM2] -centos- Using the <span class="built_in">command</span>:</div><div class="line">      su -c <span class="string">"chmod +x /etc/init.d/pm2-init.sh; chkconfig --add pm2-init.sh"</span></div><div class="line"></div><div class="line">[PM2] Done.</div><div class="line">[root@iZ94wb7tioqZ option_analysis]<span class="comment"># pm2 save</span></div><div class="line">[PM2] Dumping processes</div></pre></td></tr></table></figure></p>
+<h1 id="远程部署"><a href="#远程部署" class="headerlink" title="远程部署"></a>远程部署</h1><p>可参考官方文档，配置也不复杂，用到的时候再来填写这里的坑。TODO</p>
+<p>官方文档：<a href="http://pm2.keymetrics.io/docs/usage/deployment/#getting-started" target="_blank" rel="external">http://pm2.keymetrics.io/docs/usage/deployment/#getting-started</a></p>
+<h1 id="监控-monitor"><a href="#监控-monitor" class="headerlink" title="监控(monitor)"></a>监控(monitor)</h1><p>运行如下命令，查看当前通过pm2运行的进程的状态。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 monit</div></pre></td></tr></table></figure></p>
+<p>看到类似输出<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">[root@oneday-dev0 server]<span class="comment"># pm2 monit</span></div><div class="line">⌬ PM2 monitoring (To go further check out https://app.keymetrics.io) </div><div class="line">                                       [                              ] 0 %</div><div class="line">⌬ PM2 monitoring (To go further check o[|||||||||||||||               ] 196.285 MB  </div><div class="line"></div><div class="line"> ● fis-receiver                        [                              ] 0 %</div><div class="line">[1] [fork_mode]                        [|||||                         ] 65.773 MB  </div><div class="line"></div><div class="line"> ● www                                 [                              ] 0 %</div><div class="line">[2] [fork_mode]                        [|||||                         ] 74.426 MB  </div><div class="line"></div><div class="line"> ● oc-server                           [                              ] 0 %</div><div class="line">[3] [fork_mode]                        [||||                          ] 57.801 MB  </div><div class="line"></div><div class="line"> ● pm2-http-interface                  [                              ] stopped</div><div class="line">[4] [fork_mode]                        [                              ] 0 B   </div><div class="line"></div><div class="line"> ● start-production</div><div class="line">[5] [fork_mode]</div></pre></td></tr></table></figure></p>
+<h1 id="内存使用超过上限自动重启"><a href="#内存使用超过上限自动重启" class="headerlink" title="内存使用超过上限自动重启"></a>内存使用超过上限自动重启</h1><p>如果想要你的应用，在超过使用内存上限后自动重启，那么可以加上–max-memory-restart参数。（有对应的配置项）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pm2 start big-array.js --max-memory-restart 20M</div></pre></td></tr></table></figure></p>
+<h1 id="更新pm2"><a href="#更新pm2" class="headerlink" title="更新pm2"></a>更新pm2</h1><p>官方文档：<a href="http://pm2.keymetrics.io/docs/usage/update-pm2/#updating-pm2" target="_blank" rel="external">http://pm2.keymetrics.io/docs/usage/update-pm2/#updating-pm2</a><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ pm2 save <span class="comment"># 记得保存进程状态</span></div><div class="line">$ npm install pm2 -g</div><div class="line">$ pm2 update</div></pre></td></tr></table></figure></p>
+<h1 id="pm2-nginx"><a href="#pm2-nginx" class="headerlink" title="pm2 + nginx"></a>pm2 + nginx</h1><p>无非就是在nginx上做个反向代理配置，直接贴配置。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">upstream my_nodejs_upstream &#123;</div><div class="line">    server 127.0.0.1:3001;</div><div class="line">&#125;</div><div class="line"></div><div class="line">server &#123;</div><div class="line">    listen 80;</div><div class="line">    server_name my_nodejs_server;</div><div class="line">    root /home/www/project_root;</div><div class="line">    </div><div class="line">    location / &#123;</div><div class="line">        proxy_set_header X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line">        proxy_set_header Host <span class="variable">$http_host</span>;</div><div class="line">        proxy_set_header X-NginX-Proxy <span class="literal">true</span>;</div><div class="line">        proxy_http_version 1.1;</div><div class="line">        proxy_set_header Upgrade <span class="variable">$http_upgrade</span>;</div><div class="line">        proxy_set_header Connection <span class="string">"upgrade"</span>;</div><div class="line">        proxy_max_temp_file_size 0;</div><div class="line">        proxy_pass http://my_nodejs_upstream/;</div><div class="line">        proxy_redirect off;</div><div class="line">        proxy_read_timeout 240s;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>官方文档：<a href="http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup" target="_blank" rel="external">http://pm2.keymetrics.io/docs/tutorials/pm2-nginx-production-setup</a></p>
+<h1 id="在线监控系统"><a href="#在线监控系统" class="headerlink" title="在线监控系统"></a>在线监控系统</h1><p>收费服务，使用超级简单，可以方便的对进程的服务情况进行监控。可以试用下，地址在这里。</p>
+<p>这里贴个项目中试用的截图。<br><img src="/2017/10/18/PM2入门指南/01.jpg" alt="01"></p>
+<h1 id="pm2编程接口"><a href="#pm2编程接口" class="headerlink" title="pm2编程接口"></a>pm2编程接口</h1><p>如果想把pm2的进程监控，跟其他自动化流程整合起来，pm2的编程接口就很有用了。细节可参考官方文档：<br><a href="http://pm2.keymetrics.io/docs/usage/pm2-api/" target="_blank" rel="external">http://pm2.keymetrics.io/docs/usage/pm2-api/</a></p>
+<h1 id="模块扩展系统"><a href="#模块扩展系统" class="headerlink" title="模块扩展系统"></a>模块扩展系统</h1><p>pm2支持第三方扩展，比如常用的log rotate等。可参考官方文档。</p>
+<h1 id="写在后面"><a href="#写在后面" class="headerlink" title="写在后面"></a>写在后面</h1><p>pm2的文档已经写的很好了，学习成本很低，即使是没用过pm2的小伙伴，基本上照着getting started的例子就可以把项目给跑起来，所以文中不少地方都是建议直接参看官方文档。</p>
+<blockquote>
+<p>参考：<br><a href="http://www.cnblogs.com/chyingp/p/pm2-documentation.html" target="_blank" rel="external">http://www.cnblogs.com/chyingp/p/pm2-documentation.html</a></p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+          
+            <a href="/tags/日积月累/" rel="tag"># 日积月累</a>
+          
+            <a href="/tags/PM2/" rel="tag"># PM2</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/18/ffmpeg常用命令/" rel="next" title="ffmpeg常用命令">
+                <i class="fa fa-chevron-left"></i> ffmpeg常用命令
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">81</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">80</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录介绍"><span class="nav-number">3.</span> <span class="nav-text">目录介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#入门教程"><span class="nav-number">4.</span> <span class="nav-text">入门教程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用命令"><span class="nav-number">5.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#启动"><span class="nav-number">5.1.</span> <span class="nav-text">启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重启"><span class="nav-number">5.2.</span> <span class="nav-text">重启</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#停止"><span class="nav-number">5.3.</span> <span class="nav-text">停止</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除"><span class="nav-number">5.4.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看进程状态"><span class="nav-number">5.5.</span> <span class="nav-text">查看进程状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看某个进程的信息"><span class="nav-number">5.6.</span> <span class="nav-text">查看某个进程的信息</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置文件"><span class="nav-number">6.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动重启"><span class="nav-number">7.</span> <span class="nav-text">自动重启</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#环境切换"><span class="nav-number">8.</span> <span class="nav-text">环境切换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置声明"><span class="nav-number">8.1.</span> <span class="nav-text">环境配置声明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动指明环境"><span class="nav-number">8.2.</span> <span class="nav-text">启动指明环境</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#负载均衡"><span class="nav-number">9.</span> <span class="nav-text">负载均衡</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#日志查看"><span class="nav-number">10.</span> <span class="nav-text">日志查看</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#指令tab补全"><span class="nav-number">11.</span> <span class="nav-text">指令tab补全</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#开机自动启动"><span class="nav-number">12.</span> <span class="nav-text">开机自动启动</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#传入node-args"><span class="nav-number">13.</span> <span class="nav-text">传入node args</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#实例说明"><span class="nav-number">13.1.</span> <span class="nav-text">实例说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#远程部署"><span class="nav-number">14.</span> <span class="nav-text">远程部署</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#监控-monitor"><span class="nav-number">15.</span> <span class="nav-text">监控(monitor)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#内存使用超过上限自动重启"><span class="nav-number">16.</span> <span class="nav-text">内存使用超过上限自动重启</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更新pm2"><span class="nav-number">17.</span> <span class="nav-text">更新pm2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pm2-nginx"><span class="nav-number">18.</span> <span class="nav-text">pm2 + nginx</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在线监控系统"><span class="nav-number">19.</span> <span class="nav-text">在线监控系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pm2编程接口"><span class="nav-number">20.</span> <span class="nav-text">pm2编程接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模块扩展系统"><span class="nav-number">21.</span> <span class="nav-text">模块扩展系统</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#写在后面"><span class="nav-number">22.</span> <span class="nav-text">写在后面</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
