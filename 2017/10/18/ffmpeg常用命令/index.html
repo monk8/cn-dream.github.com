@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://cn-dream.github.io/2017/10/18/ffmpeg常用命令/index.html">
 <meta property="og:site_name" content="中国梦">
 <meta property="og:description" content="截取一段视频1ffmpeg  -i ./plutopr.mp4 -vcodec copy -acodec copy -ss 00:00:10 -to 00:00:15 ./cutout1.mp4 -y  -ss time_off        set the start time offset 设置从视频的哪个时间点开始截取，上文从视频的第10s开始截取 -to 截到视频的哪个时间点结束。上文到视">
-<meta property="og:updated_time" content="2017-10-18T05:05:31.660Z">
+<meta property="og:updated_time" content="2017-12-05T12:53:06.317Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ffmpeg常用命令">
 <meta name="twitter:description" content="截取一段视频1ffmpeg  -i ./plutopr.mp4 -vcodec copy -acodec copy -ss 00:00:10 -to 00:00:15 ./cutout1.mp4 -y  -ss time_off        set the start time offset 设置从视频的哪个时间点开始截取，上文从视频的第10s开始截取 -to 截到视频的哪个时间点结束。上文到视">
@@ -349,7 +349,7 @@
 </li>
 </ul>
 <p>-i 表示源视频文件<br>-y 表示如果输出文件已存在则覆盖。</p>
-<p> ffmpeg -i a.mp4 -vf “movie=tv_logo.png [watermark]; [in][watermark] overlay=1:10” output.mp4</p>
+<p> ffmpeg -i 8s.mp4 -vf “movie=tv_logo.png [watermark]; [in][watermark] overlay=1:10” output.mp4</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i  in.mp4 -i tv_logo.png -filter_complex <span class="string">"[1:v]colorkey=0x000000:0.6:1.0[ckout];[0:v][ckout]overlay=x=W-w-10:y=0[out]"</span> -map <span class="string">"[out]"</span> -movflags faststart bbs.chinaffmpeg.com孙悟空.mp4</div></pre></td></tr></table></figure>
 <p>./ffmpeg -i ~/Downloads/20151205_AM<em>25</em>一层国际厅_姜昊文.ppsx.mp4 -i ~/Downloads/sy.png -filter_complex “[1:v]colorkey=0x000000:0.6:1.0[ckout];[0:v][ckout]overlay=x=W-w-10:y=0[out]” -map “[out]” -movflags faststart bbs.chinaffmpeg.com孙悟空.mp4</p>
 <p><code>bastv_logon.mp4 -i ~/Downloads/sy.png -filter_complex &quot;[1:v]colorkey=0x000000:0.6:1.0[ckout];[0:v][ckout]overlay=x=W-w-10:y=0[out]&quot; -map &quot;[out]&quot; -movflags faststart bbs.chinaffmpeg.com孙悟空.mp4</code></p>
@@ -482,7 +482,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">89</span>
+                <span class="site-state-item-count">92</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -504,7 +504,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">94</span>
+                <span class="site-state-item-count">97</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

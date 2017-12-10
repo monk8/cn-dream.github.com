@@ -1,0 +1,730 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="日积月累,html,markdown," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="一、目的商高学院项目，藏经阁板块，需要采集网整理络内容，写此文档。目前网络上有大量的书籍内容，是pdf，doc的，次方法可以转换部分doc。 二、wps另存为英文文件名wps 转换的时候，注意，存储文件名为 英文文件名，以防后续处理会出现问题 三、使用html2text 工具去除冗余I. 环境准备( 1 ) python3安装记得勾选 python3加入环境变量 ( 2 ) html2text项目">
+<meta name="keywords" content="日积月累,html,markdown">
+<meta property="og:type" content="article">
+<meta property="og:title" content="html与markdown的互相转换">
+<meta property="og:url" content="http://cn-dream.github.io/2017/12/05/html与markdown的互相转换/index.html">
+<meta property="og:site_name" content="中国梦">
+<meta property="og:description" content="一、目的商高学院项目，藏经阁板块，需要采集网整理络内容，写此文档。目前网络上有大量的书籍内容，是pdf，doc的，次方法可以转换部分doc。 二、wps另存为英文文件名wps 转换的时候，注意，存储文件名为 英文文件名，以防后续处理会出现问题 三、使用html2text 工具去除冗余I. 环境准备( 1 ) python3安装记得勾选 python3加入环境变量 ( 2 ) html2text项目">
+<meta property="og:image" content="http://cn-dream.github.io/2017/12/05/html与markdown的互相转换/01.png">
+<meta property="og:image" content="http://cn-dream.github.io/2017/12/05/html与markdown的互相转换/02.png">
+<meta property="og:updated_time" content="2017-12-05T04:12:41.703Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="html与markdown的互相转换">
+<meta name="twitter:description" content="一、目的商高学院项目，藏经阁板块，需要采集网整理络内容，写此文档。目前网络上有大量的书籍内容，是pdf，doc的，次方法可以转换部分doc。 二、wps另存为英文文件名wps 转换的时候，注意，存储文件名为 英文文件名，以防后续处理会出现问题 三、使用html2text 工具去除冗余I. 环境准备( 1 ) python3安装记得勾选 python3加入环境变量 ( 2 ) html2text项目">
+<meta name="twitter:image" content="http://cn-dream.github.io/2017/12/05/html与markdown的互相转换/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://cn-dream.github.io/2017/12/05/html与markdown的互相转换/"/>
+
+
+
+
+
+  <title>html与markdown的互相转换 | 中国梦</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">中国梦</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">慢慢来，理解越多，越不需要强记。</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-bookmark">
+          <a href="/2017/07/17/书签/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            书签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.bootcss.com/mermaid/6.0.0/mermaid.min.css">
+<script src="//cdn.bootcss.com/mermaid/6.0.0/mermaid.min.js"></script>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://cn-dream.github.io/2017/12/05/html与markdown的互相转换/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="1623695606@qq.com">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="中国梦">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">html与markdown的互相转换</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-05T10:41:06+08:00">
+                2017-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="一、目的"><a href="#一、目的" class="headerlink" title="一、目的"></a>一、目的</h1><p>商高学院项目，藏经阁板块，需要采集网整理络内容，写此文档。<br>目前网络上有大量的书籍内容，是pdf，doc的，次方法可以转换部分doc。</p>
+<h1 id="二、wps另存为英文文件名"><a href="#二、wps另存为英文文件名" class="headerlink" title="二、wps另存为英文文件名"></a>二、wps另存为英文文件名</h1><p>wps 转换的时候，注意，存储文件名为 英文文件名，以防后续处理会出现问题</p>
+<h1 id="三、使用html2text-工具去除冗余"><a href="#三、使用html2text-工具去除冗余" class="headerlink" title="三、使用html2text 工具去除冗余"></a>三、使用html2text 工具去除冗余</h1><h2 id="I-环境准备"><a href="#I-环境准备" class="headerlink" title="I. 环境准备"></a>I. 环境准备</h2><h3 id="1-python3"><a href="#1-python3" class="headerlink" title="( 1 ) python3"></a>( 1 ) python3</h3><p>安装记得勾选 python3加入环境变量</p>
+<h3 id="2-html2text"><a href="#2-html2text" class="headerlink" title="( 2 ) html2text"></a>( 2 ) html2text</h3><p><img src="/2017/12/05/html与markdown的互相转换/01.png" alt="01"><br>项目地址：<a href="https://github.com/aaronsw/html2text" target="_blank" rel="external">https://github.com/aaronsw/html2text</a><br> 下载zip包后，解压到如下目录<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function">D:\<span class="title">dev</span>\<span class="title">env</span>\<span class="title">tools</span>\<span class="title">py3</span>\<span class="title">html2text</span> (<span class="title">master</span>)</span></div><div class="line">λ <span class="title">dir</span></div><div class="line"><span class="title">COPYING</span>  <span class="title">html2text.py</span>  <span class="title">MANIFEST.in</span>  <span class="title">README.md</span>  <span class="title">setup.py</span>  <span class="title">test</span></div></pre></td></tr></table></figure></p>
+<p>添加到环境变量<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">D:\dev\env\tools\py3\html2text</div></pre></td></tr></table></figure></p>
+<p><img src="/2017/12/05/html与markdown的互相转换/02.png" alt="02"><br>测试：html2text.py –help<br><figure class="highlight cmd"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function">D:\&gt;<span class="title">html2text.py</span> --<span class="title">help</span></span></div><div class="line"><span class="title">Usage</span>: <span class="title">html2text.py</span> [(<span class="title">filename</span>|<span class="title">url</span>) [<span class="title">encoding</span>]]</div><div class="line"></div><div class="line"><span class="title">Options</span>:</div><div class="line">  --<span class="title">version</span>             <span class="title">show</span> <span class="title">program</span>'<span class="title">s</span> <span class="title">version</span> <span class="title">number</span> <span class="title">and</span> <span class="title">exit</span></div><div class="line">  -<span class="title">h</span>, --<span class="title">help</span>            <span class="title">show</span> <span class="title">this</span> <span class="title">help</span> <span class="title">message</span> <span class="title">and</span> <span class="title">exit</span></div><div class="line">  --<span class="title">ignore</span>-<span class="title">emphasis</span>     <span class="title">don</span>'<span class="title">t</span> <span class="title">include</span> <span class="title">any</span> <span class="title">formatting</span> <span class="title">for</span> <span class="title">emphasis</span></div><div class="line">  --<span class="title">ignore</span>-<span class="title">links</span>        <span class="title">don</span>'<span class="title">t</span> <span class="title">include</span> <span class="title">any</span> <span class="title">formatting</span> <span class="title">for</span> <span class="title">links</span></div><div class="line">  --<span class="title">ignore</span>-<span class="title">images</span>       <span class="title">don</span>'<span class="title">t</span> <span class="title">include</span> <span class="title">any</span> <span class="title">formatting</span> <span class="title">for</span> <span class="title">images</span></div><div class="line">  -<span class="title">g</span>, --<span class="title">google</span>-<span class="title">doc</span>      <span class="title">convert</span> <span class="title">an</span> <span class="title">html</span>-<span class="title">exported</span> <span class="title">Google</span> <span class="title">Document</span></div><div class="line">  -<span class="title">d</span>, --<span class="title">dash</span>-<span class="title">unordered</span>-<span class="title">list</span></div><div class="line">                        <span class="title">use</span> <span class="title">a</span> <span class="title">dash</span> <span class="title">rather</span> <span class="title">than</span> <span class="title">a</span> <span class="title">star</span> <span class="title">for</span> <span class="title">unordered</span> <span class="title">list</span> <span class="title">items</span></div><div class="line">  -<span class="title">e</span>, --<span class="title">asterisk</span>-<span class="title">emphasis</span></div><div class="line">                        <span class="title">use</span> <span class="title">an</span> <span class="title">asterisk</span> <span class="title">rather</span> <span class="title">than</span> <span class="title">an</span> <span class="title">underscore</span> <span class="title">for</span></div><div class="line">                        <span class="title">emphasized</span> <span class="title">text</span></div><div class="line">  -<span class="title">b</span> <span class="title">BODY_WIDTH</span>, --<span class="title">body</span>-<span class="title">width</span>=<span class="title">BODY_WIDTH</span></div><div class="line">                        <span class="title">number</span> <span class="title">of</span> <span class="title">characters</span> <span class="title">per</span> <span class="title">output</span> <span class="title">line</span>, 0 <span class="title">for</span> <span class="title">no</span> <span class="title">wrap</span></div><div class="line">  -<span class="title">i</span> <span class="title">LIST_INDENT</span>, --<span class="title">google</span>-<span class="title">list</span>-<span class="title">indent</span>=<span class="title">LIST_INDENT</span></div><div class="line">                        <span class="title">number</span> <span class="title">of</span> <span class="title">pixels</span> <span class="title">Google</span> <span class="title">indents</span> <span class="title">nested</span> <span class="title">lists</span></div><div class="line">  -<span class="title">s</span>, --<span class="title">hide</span>-<span class="title">strikethrough</span></div><div class="line">                        <span class="title">hide</span> <span class="title">strike</span>-<span class="title">through</span> <span class="title">text</span>. <span class="title">only</span> <span class="title">relevant</span> <span class="title">when</span> -<span class="title">g</span> <span class="title">is</span></div><div class="line">                        <span class="title">specified</span> <span class="title">as</span> <span class="title">well</span></div><div class="line">  --<span class="title">escape</span>-<span class="title">all</span>          <span class="title">Escape</span> <span class="title">all</span> <span class="title">special</span> <span class="title">characters</span>.  <span class="title">Output</span> <span class="title">is</span> <span class="title">less</span></div><div class="line">                        <span class="title">readable</span>, <span class="title">but</span> <span class="title">avoids</span> <span class="title">corner</span> <span class="title">case</span> <span class="title">formatting</span> <span class="title">issues</span>.</div></pre></td></tr></table></figure></p>
+<h2 id="II-使用"><a href="#II-使用" class="headerlink" title="II. 使用"></a>II. 使用</h2><ol>
+<li>article.doc</li>
+<li>article.html</li>
+<li>article-body.html<figure class="highlight cmd"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">html2text article-body.txt &gt; article.<span class="built_in">md</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/日积月累/" rel="tag"># 日积月累</a>
+          
+            <a href="/tags/html/" rel="tag"># html</a>
+          
+            <a href="/tags/markdown/" rel="tag"># markdown</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/16/帝王权术之以贪治贪/" rel="next" title="帝王权术之以贪治贪">
+                <i class="fa fa-chevron-left"></i> 帝王权术之以贪治贪
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/05/npm使用指南/" rel="prev" title="npm使用指南">
+                npm使用指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="1623695606@qq.com" />
+          <p class="site-author-name" itemprop="name">1623695606@qq.com</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">92</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">97</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、目的"><span class="nav-number">1.</span> <span class="nav-text">一、目的</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、wps另存为英文文件名"><span class="nav-number">2.</span> <span class="nav-text">二、wps另存为英文文件名</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、使用html2text-工具去除冗余"><span class="nav-number">3.</span> <span class="nav-text">三、使用html2text 工具去除冗余</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#I-环境准备"><span class="nav-number">3.1.</span> <span class="nav-text">I. 环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-python3"><span class="nav-number">3.1.1.</span> <span class="nav-text">( 1 ) python3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-html2text"><span class="nav-number">3.1.2.</span> <span class="nav-text">( 2 ) html2text</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#II-使用"><span class="nav-number">3.2.</span> <span class="nav-text">II. 使用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">1623695606@qq.com</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+<div>
+  <a href='http://www.miibeian.gov.cn' target='_blank' style="background: url('/beian.png') no-repeat ; padding-left: 26px; text-decoration: none;">
+    沪公网安备 31012002003779号
+  </a>
+</div>
+
+<div>沪ICP备17042678号</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
